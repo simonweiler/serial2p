@@ -218,7 +218,7 @@ dat_bar(i,:)=[nanmean(data(i,subvis)) nanmean(data(i,subss)) nanmean(data(i,subm
 dat_barerr(i,:)=[nanstd(data(i,subvis))/sqrt(size(data(i,subvis),2))' nanstd(data(i,subss))/sqrt(size(data(i,subss),2))'...
      nanstd(data(i,subm)/sqrt(size(data(i,subm),2))')];
 end
-b = bar(dat_bar, 'grouped');b(1).FaceColor=[0.5 0.5 0.5];b(2).FaceColor='m';b(3).FaceColor=[0 0.7 1];
+b = bar(dat_bar, 'grouped');b(1).FaceColor='m';b(2).FaceColor=[0 0.8 0.5];b(3).FaceColor=[0 0.4 1];
 hold on;
 % Calculate the number of groups and number of bars in each group
 [ngroups,nbars] = size(dat_bar);
@@ -242,6 +242,62 @@ hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
 legend boxoff;set(gca,'FontSize',12);   
+%% Plot all in an individual plot 
+subvis=[];subss=[];subm=[];
+subvis=find(cell2mat(batchopt.type)==1 & inject_area<2);
+subss=find(cell2mat(batchopt.type)==1 & inject_area==2);
+subm=find(cell2mat(batchopt.type)==1 & inject_area==3);
+data=[];
+data=areas_all./sum(areas_all);
+maxyline=0.52;
+
+fig1= figure;set(fig1, 'Name', 'Barplot groups');set(fig1, 'Position', [400, 500,550, 430]);set(gcf,'color','w');
+subplot(3,1,1)
+for i=1:size(data,1)
+hold on;
+b2=bar(i,nanmean(data(i,subvis)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+hold on;
+er=errorbar(i,nanmean(data(i,subvis)),nanstd(data(i,subvis))/sqrt(size(data(i,subvis),2)));
+er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
+end
+hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;text(1,maxyline,'Vision');hold on;text(5.2,maxyline,'Somatosen.');hold on;text(9.5,maxyline,'Motor');hold on;text(16,maxyline,'Other');
+set(gca,'FontSize',12);box off;xticklabels([]);
+title(['VISp ' '(N=' num2str(length(subvis)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+
+
+subplot(3,1,2)
+for i=1:size(data,1)
+hold on;
+b2=bar(i,nanmean(data(i,subss)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+hold on;
+er=errorbar(i,nanmean(data(i,subss)),nanstd(data(i,subss))/sqrt(size(data(i,subss),2)));
+er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
+end
+hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+set(gca,'FontSize',12);
+title(['SSbfd ' '(N=' num2str(length(subss)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+box off;xticklabels([]);ylabel('Fraction of cells');
+
+subplot(3,1,3)
+for i=1:size(data,1)
+hold on;
+b2=bar(i,nanmean(data(i,subm)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+hold on;
+er=errorbar(i,nanmean(data(i,subm)),nanstd(data(i,subm))/sqrt(size(data(i,subm),2)));
+er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
+end
+hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+set(gca,'FontSize',12);box off;xticks(1:size(data,1));xticklabels(areas_abb);
+title(['MOp' ' (N=' num2str(length(subm)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+%% 
+
 %% %% Layer per area for homotopic contra areas comparison: VISp, SSbf, MOp RETROGRADE
 datavis=[];datass=[];datam=[];
 datavis=visp_layers_all(1:6,subvis)./sum(visp_layers_all(1:6,subvis));
@@ -255,7 +311,8 @@ dat_barerr=[]; dat_barerr=[nanstd(datavis,[],2)./sqrt(size(datavis,1)) nanstd(da
     datam_sem];
 
 fig1= figure;set(fig1, 'Name', 'Barplot groups');set(fig1, 'Position', [400, 500, 350, 350]);set(gcf,'color','w');
-b = bar(data_all, 'grouped');b(1).FaceColor=[0.5 0.5 0.5];b(2).FaceColor='m';b(3).FaceColor=[0 0.7 1];
+b = bar(data_all, 'grouped');b(1).FaceColor='m';b(2).FaceColor=[0 0.8 0.5];b(3).FaceColor=[0 0.4 1];
+%b = bar(dat_bar, 'grouped');b(1).FaceColor='m';b(2).FaceColor=[0 0.8 0.5];b(3).FaceColor=[0 0.4 1];
 hold on;
 % Calculate the number of groups and number of bars in each group
 [ngroups]=[];[nbars]=[];
@@ -270,11 +327,11 @@ er=errorbar(x',data_all,dat_barerr,'k','linestyle','none');
 xticks(1:size(data,1));xticklabels({'L1','L2/3','L4','L5','L6a','L6b'});
 ylabel('Fraction of cells');
 set(gca,'FontSize',10);
-title({'Homotopic layer origin of CPNs','to VISp, SSbf and MOp'});
-ylim([0 0.7]);box off;
+%title({'Homotopic layer origin of CPNs','to VISp, SSbf and MOp'});
+ylim([0 0.8]);box off;
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
 legend boxoff;set(gca,'FontSize',12);   
-%% Plot in heatmap across all areas
+%% Plot in heatmap across all areas RETROGRADE
 %VISp injeciton 
 datavis=[];datass=[];datam=[];endpoints=[];startpoints=[];all_vis=[];all_ss=[];all_m=[];
 %threshold for retro
@@ -282,22 +339,47 @@ visp_layers_all_sub=[];
 visp_layers_all_sub=visp_layers_all;
 thrsh=30;
 [r m] = find(visp_layers_all_sub<thrsh);
+midx=visp_layers_all_sub<thrsh;
 for i=1:length(r)
 visp_layers_all_sub(r(i),m(i))=0;
 end
 
-find(visp_layers_all>30)
+
 endpoints=cumsum(list_to_find_layers);
 startpoints=[1 endpoints(1:end-1)+1];
 for i=1:length(endpoints)
-    visp_layers_all_sub(startpoints(i))=0;
-     d_vis=[];  d_ss=[];  d_m=[];
+    %visp_layers_all_sub(startpoints(i))=0;
+     d_vis=[];  d_ss=[];  d_m=[];datavis=[];datass=[];datam=[];datavis_m=[];datass_m=[];datam_m=[]; subcr_vis=[];
+      subcr_ss=[]; subcr_m=[];
+     
     datavis=visp_layers_all_sub(startpoints(i):endpoints(i),subvis)./sum(visp_layers_all_sub(startpoints(i):endpoints(i),subvis));
     datass=visp_layers_all_sub(startpoints(i):endpoints(i),subss)./sum(visp_layers_all_sub(startpoints(i):endpoints(i),subss));
     datam=visp_layers_all_sub(startpoints(i):endpoints(i),subm)./sum(visp_layers_all_sub(startpoints(i):endpoints(i),subm));
+    subcr_vis=sum(midx(startpoints(i):endpoints(i),subvis),2);
+    subcr_ss=sum(midx(startpoints(i):endpoints(i),subss),2);
+    subcr_m=sum(midx(startpoints(i):endpoints(i),subm),2);
+%     datavis_m=[sum(datavis(1,:));datavis(4:end,:)];
+%     datass_m=[sum(datass(1,:));datass(4:end,:)];
+%     datam_m=[sum(datam(1,:));datam(4:end,:)];
     d_vis=nanmean(datavis,2);
     d_ss=nanmean(datass,2);
     d_m=nanmean(datam,2);
+    if isempty(find(subcr_vis>2))==0
+    d_vis(find(subcr_vis>2))=0
+    else
+        d_vis=d_vis;
+    end
+     if isempty(find(subcr_ss>2))==0
+    d_ss(find(subcr_ss>2))=0
+    else
+        d_ss=d_ss;
+     end
+      if isempty(find(subcr_m>2))==0
+    d_m(find(subcr_m>2))=0
+    else
+        d_m=d_m;
+      end
+
     if length(d_vis)<6
         f_vis=[d_vis(1:2); 0; d_vis(3:5)];
         f_ss=[d_ss(1:2); 0; d_ss(3:5)];
@@ -315,13 +397,18 @@ end
 
 cmap1='plasma';
 fig1=figure;set(gcf,'color','w');set(fig1, 'Position', [200, 200 ,600, 300]);
+%imagesc([zeros(1,length(all_vis));all_vis]);colormap(cmap1);
 imagesc(all_vis);colormap(cmap1);
-yticklabels({'L1','2/3','L4','L5','L6a','L6b'})
-xticks(1:1:17)
+yticklabels({'L1','L2/3','L4','L5','L6a','L6b'})
+xticks(1:1:17);
 %xticklabels([areas_abb(1:11) areas_abb(13:16) areas_abb(18:19)]);
 xticklabels([areas_abb([1 5 10]) areas_abb(2:4) areas_abb(6:9) areas_abb(11) areas_abb(13:16) areas_abb(18:19)]);
+set(gca,'FontSize',12);colorbar;caxis([0 0.6]);
+%% 
+
 cmap1='plasma';
 fig1=figure;set(gcf,'color','w');set(fig1, 'Position', [200, 200 ,600, 300]);
+%imagesc([zeros(1,length(all_ss));all_ss]);colormap(cmap1);
 imagesc(all_ss);colormap(cmap1);
 yticklabels({'L1','L2/3','L4','L5','L6a','L6b'})
 xticks(1:1:17)
@@ -329,6 +416,7 @@ xticks(1:1:17)
 xticklabels([areas_abb([1 5 10]) areas_abb(2:4) areas_abb(6:9) areas_abb(11) areas_abb(13:16) areas_abb(18:19)]);
 cmap1='plasma';
 fig1=figure;set(gcf,'color','w');set(fig1, 'Position', [200, 200 ,600, 300]);
+%imagesc([zeros(1,length(all_m));all_m]);colormap(cmap1);
 imagesc(all_m);colormap(cmap1);
 yticklabels({'L1','L2/3','L4','L5','L6a','L6b'})
 xticks(1:1:17)
@@ -349,7 +437,7 @@ dat_bar(i,:)=[nanmean(data(i,subvis)) nanmean(data(i,subss)) nanmean(data(i,subm
 dat_barerr(i,:)=[nanstd(data(i,subvis))/sqrt(size(data(i,subvis),2))' nanstd(data(i,subss))/sqrt(size(data(i,subss),2))'...
      nanstd(data(i,subm)/sqrt(size(data(i,subm),2))')];
 end
-b = bar(dat_bar, 'grouped');b(1).FaceColor=[0.5 0.5 0.5];b(2).FaceColor='m';b(3).FaceColor=[0 0.7 1];
+b = bar(dat_bar, 'grouped');b(1).FaceColor='m';b(2).FaceColor=[0 0.8 0.5];b(3).FaceColor=[0 0.4 1];
 hold on;
 % Calculate the number of groups and number of bars in each group
 [ngroups,nbars] = size(dat_bar);
@@ -373,6 +461,61 @@ hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','-
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
 legend boxoff;set(gca,'FontSize',12);  box off;
 %% 
+%% Plot all in an individual plot 
+subvis=[];subss=[];subm=[];
+subvis=find(cell2mat(batchopt.type)==2 & inject_area<2);
+subss=find(cell2mat(batchopt.type)==2 & inject_area==2);
+subm=find(cell2mat(batchopt.type)==2 & inject_area==3);
+data=[];
+data=areas_all./sum(areas_all);
+maxyline=0.52;
+
+fig1= figure;set(fig1, 'Name', 'Barplot groups');set(fig1, 'Position', [400, 500,550, 430]);set(gcf,'color','w');
+subplot(3,1,1)
+for i=1:size(data,1)
+hold on;
+b2=bar(i,nanmean(data(i,subvis)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+hold on;
+er=errorbar(i,nanmean(data(i,subvis)),nanstd(data(i,subvis))/sqrt(size(data(i,subvis),2)));
+er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
+end
+hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;text(1,maxyline,'Vision');hold on;text(5.2,maxyline,'Somatosen.');hold on;text(9.5,maxyline,'Motor');hold on;text(16,maxyline,'Other');
+set(gca,'FontSize',12);box off;xticklabels([]);
+title(['VISp ' '(N=' num2str(length(subvis)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+
+
+subplot(3,1,2)
+for i=1:size(data,1)
+hold on;
+b2=bar(i,nanmean(data(i,subss)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+hold on;
+er=errorbar(i,nanmean(data(i,subss)),nanstd(data(i,subss))/sqrt(size(data(i,subss),2)));
+er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
+end
+hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+set(gca,'FontSize',12);
+title(['SSbfd ' '(N=' num2str(length(subss)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+box off;xticklabels([]);ylabel('Fraction of cells');
+
+subplot(3,1,3)
+for i=1:size(data,1)
+hold on;
+b2=bar(i,nanmean(data(i,subm)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+hold on;
+er=errorbar(i,nanmean(data(i,subm)),nanstd(data(i,subm))/sqrt(size(data(i,subm),2)));
+er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
+end
+hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
+set(gca,'FontSize',12);box off;xticks(1:size(data,1));xticklabels(areas_abb);
+title(['MOp' ' (N=' num2str(length(subm)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+ylim([0 maxyline])
 %% %% Layer per area for homtopic contra areas comparison ANTEROGRADE
 datavis=[];datass=[];datam=[];
 datavis=visp_layers_all(1:6,subvis)./sum(visp_layers_all(1:6,subvis));
@@ -386,7 +529,7 @@ dat_barerr=[]; dat_barerr=[nanstd(datavis,[],2)./sqrt(size(datavis,1)) nanstd(da
     datam_sem];
 
 fig1= figure;set(fig1, 'Name', 'Barplot groups');set(fig1, 'Position', [400, 500, 350, 350]);set(gcf,'color','w');
-b = bar(data_all, 'grouped');b(1).FaceColor=[0.5 0.5 0.5];b(2).FaceColor='m';b(3).FaceColor=[0 0.7 1];
+b = bar(data_all, 'grouped');b(1).FaceColor='m';b(2).FaceColor=[0 0.8 0.5];b(3).FaceColor=[0 0.4 1];
 hold on;
 % Calculate the number of groups and number of bars in each group
 [ngroups]=[];[nbars]=[];
@@ -401,14 +544,85 @@ er=errorbar(x',data_all,dat_barerr,'k','linestyle','none');
 xticks(1:size(data,1));xticklabels({'L1','L2/3','L4','L5','L6a','L6b'});
 ylabel('Fraction of cells');
 set(gca,'FontSize',10);
-title(['Homotopic Contra Hemisphere']);
-ylim([0 0.7]);box off;
-title({'Homotopic layer projection targets of CPNs','from VISp, SSbf and MOp'});
+%title(['Homotopic Contra Hemisphere']);
+ylim([0 0.8]);box off;
+%title({'Homotopic layer projection targets of CPNs','from VISp, SSbf and MOp'});
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
 legend boxoff;set(gca,'FontSize',12);   
-%% 
+%% %% Plot in heatmap across all areas Anterograde
+%% Plot in heatmap across all areas RETROGRADE
+%VISp injeciton 
+datavis=[];datass=[];datam=[];endpoints=[];startpoints=[];all_vis=[];all_ss=[];all_m=[];
+%threshold for retro
+visp_layers_all_sub=[];
+visp_layers_all_sub=visp_layers_all;
+thrsh=10;
+[r m] = find(visp_layers_all_sub<thrsh);
+midx=visp_layers_all_sub<thrsh;
+for i=1:length(r)
+visp_layers_all_sub(r(i),m(i))=0;
+end
 
 
+endpoints=cumsum(list_to_find_layers);
+startpoints=[1 endpoints(1:end-1)+1];
+for i=1:length(endpoints)
+    %visp_layers_all_sub(startpoints(i))=0;
+     d_vis=[];  d_ss=[];  d_m=[];datavis=[];datass=[];datam=[];datavis_m=[];datass_m=[];datam_m=[]; subcr_vis=[];
+      subcr_ss=[]; subcr_m=[];
+     
+    datavis=visp_layers_all_sub(startpoints(i):endpoints(i),subvis)./sum(visp_layers_all_sub(startpoints(i):endpoints(i),subvis));
+    datass=visp_layers_all_sub(startpoints(i):endpoints(i),subss)./sum(visp_layers_all_sub(startpoints(i):endpoints(i),subss));
+    datam=visp_layers_all_sub(startpoints(i):endpoints(i),subm)./sum(visp_layers_all_sub(startpoints(i):endpoints(i),subm));
+    subcr_vis=sum(midx(startpoints(i):endpoints(i),subvis),2);
+    subcr_ss=sum(midx(startpoints(i):endpoints(i),subss),2);
+    subcr_m=sum(midx(startpoints(i):endpoints(i),subm),2);
+%     datavis_m=[sum(datavis(1,:));datavis(4:end,:)];
+%     datass_m=[sum(datass(1,:));datass(4:end,:)];
+%     datam_m=[sum(datam(1,:));datam(4:end,:)];
+    d_vis=nanmean(datavis,2);
+    d_ss=nanmean(datass,2);
+    d_m=nanmean(datam,2);
+    if isempty(find(subcr_vis>2))==0
+    d_vis(find(subcr_vis>2))=0
+    else
+        d_vis=d_vis;
+    end
+     if isempty(find(subcr_ss>2))==0
+    d_ss(find(subcr_ss>2))=0
+    else
+        d_ss=d_ss;
+     end
+      if isempty(find(subcr_m>2))==0
+    d_m(find(subcr_m>2))=0
+    else
+        d_m=d_m;
+      end
+
+    if length(d_vis)<6
+        f_vis=[d_vis(1:2); 0; d_vis(3:5)];
+        f_ss=[d_ss(1:2); 0; d_ss(3:5)];
+        f_m=[d_m(1:2); 0; d_m(3:5)];
+    else
+        f_vis=d_vis;
+        f_ss=d_ss;
+        f_m=d_m;
+    end
+  
+    all_vis(:,i)=f_vis;
+    all_ss(:,i)=f_ss;
+    all_m(:,i)=f_m;
+end
+
+cmap1='plasma';
+fig1=figure;set(gcf,'color','w');set(fig1, 'Position', [200, 200 ,600, 300]);
+%imagesc([zeros(1,length(all_vis));all_vis]);colormap(cmap1);
+imagesc(all_vis);colormap(cmap1);
+yticklabels({'L1','L2/3','L4','L5','L6a','L6b'})
+xticks(1:1:17);
+%xticklabels([areas_abb(1:11) areas_abb(13:16) areas_abb(18:19)]);
+xticklabels([areas_abb([1 5 10]) areas_abb(2:4) areas_abb(6:9) areas_abb(11) areas_abb(13:16) areas_abb(18:19)]);
+set(gca,'FontSize',12);colorbar;caxis([0 0.6]);
 
 %% COMPARE ANTERO vs RETRO
 subretro=[];subantero=[];

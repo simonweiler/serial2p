@@ -55,12 +55,16 @@ i1pr=nanmean(i1_profile_s,2);
 i2pr=nanmean(i2_profile_s,2);
 i1pr=i1pr./max(i1pr);
 i2pr=i2pr./max(i2pr);
-xnorm=[1:length(i1pr)]./max([1:length(i1pr)]);
+i1pr=smoothdata(i1pr);
+i2pr=smoothdata(i2pr);
+i1pr_s=i1pr(1:5:end);
+i2pr_s=i2pr(1:5:end);
+xnorm=[1:length(i1pr_s)]./max([1:length(i1pr_s)]);
 % figure;plot(i1pr(1:1:end),1:1:length(i1pr));hold on;
 % plot(i2pr(1:1:end),1:1:length(i2pr));
 fig1= figure;set(fig1, 'Name', 'Intensity profiles');set(fig1, 'Position', [400, 500, 350, 400]);set(gcf,'color','w');
-shadedErrorBar(xnorm,nanmean([i1pr i2pr(1:length(i1pr))],2)...
-    ,nanstd([i1pr i2pr(1:length(i1pr))],[],2)/sqrt(2),'lineProps','b');
+shadedErrorBar(xnorm,nanmean([i1pr_s i2pr_s(1:length(i1pr_s))],2)...
+    ,nanstd([i1pr_s i2pr_s(1:length(i1pr_s))],[],2)/sqrt(2),'lineProps','k');
 set(gca,'XDir','reverse');
 view([90 -90]);ylim([-0.3 1]);xlim([0 1]);ylabel('Normalized Pixel intensity');
 xlabel('Normalized depth from pia');set(gca,'FontSize',14);
