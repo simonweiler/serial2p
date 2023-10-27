@@ -144,6 +144,9 @@ for i=1:nummice%for loop over experiments across days
    volume_all(:,i)=count_brain_volume';
 
 end
+%% 
+col_m=[([235 0 139]./256);([0 165 81]./256);([0 102 255]./256)];
+
 %% Plot barplots fraction 
 %all areasraw count and then fraction
 data=[];
@@ -242,7 +245,7 @@ hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
 legend boxoff;set(gca,'FontSize',12);   
-%% Plot all in an individual plot 
+%% Plot all in an individual plot THIS IS USED FOR THE NWG AND SFN 2023 POSTER ATM: RETRO
 subvis=[];subss=[];subm=[];
 subvis=find(cell2mat(batchopt.type)==1 & inject_area<2);
 subss=find(cell2mat(batchopt.type)==1 & inject_area==2);
@@ -255,7 +258,7 @@ fig1= figure;set(fig1, 'Name', 'Barplot groups');set(fig1, 'Position', [400, 500
 subplot(3,1,1)
 for i=1:size(data,1)
 hold on;
-b2=bar(i,nanmean(data(i,subvis)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+b2=bar(i,nanmean(data(i,subvis)));b2.FaceColor=[0.85 0.85 0.85];b2.LineWidth=1;b2.EdgeColor=[0 0 0];b2.FaceAlpha=0.3;
 hold on;
 er=errorbar(i,nanmean(data(i,subvis)),nanstd(data(i,subvis))/sqrt(size(data(i,subvis),2)));
 er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
@@ -265,13 +268,13 @@ hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;text(1,maxyline,'Vision');hold on;text(5.2,maxyline,'Somatosen.');hold on;text(9.5,maxyline,'Motor');hold on;text(16,maxyline,'Other');
 set(gca,'FontSize',12);box off;xticklabels([]);
-title(['VISp ' '(N=' num2str(length(subvis)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
-
+title(['VISp ' '(N=' num2str(length(subvis)) ')'],'FontWeight','bold','FontSize',12,'Color',col_m(1,:));ax = gca;ax.TitleHorizontalAlignment = 'right';
+set(gca,'TickDir','out'); 
 
 subplot(3,1,2)
 for i=1:size(data,1)
 hold on;
-b2=bar(i,nanmean(data(i,subss)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+b2=bar(i,nanmean(data(i,subss)));b2.FaceColor=[0.85 0.85 0.85];b2.LineWidth=1;b2.EdgeColor=[0 0 0];b2.FaceAlpha=0.3;
 hold on;
 er=errorbar(i,nanmean(data(i,subss)),nanstd(data(i,subss))/sqrt(size(data(i,subss),2)));
 er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
@@ -280,13 +283,14 @@ hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 set(gca,'FontSize',12);
-title(['SSbfd ' '(N=' num2str(length(subss)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+title(['SSbfd ' '(N=' num2str(length(subss)) ')'],'FontWeight','bold','FontSize',12,'Color',col_m(2,:));ax = gca;ax.TitleHorizontalAlignment = 'right';
 box off;xticklabels([]);ylabel('Fraction of cells');
+set(gca,'TickDir','out'); 
 
 subplot(3,1,3)
 for i=1:size(data,1)
 hold on;
-b2=bar(i,nanmean(data(i,subm)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+b2=bar(i,nanmean(data(i,subm)));b2.FaceColor=[0.85 0.85 0.85];b2.LineWidth=1;b2.EdgeColor=[0 0 0];b2.FaceAlpha=0.3;
 hold on;
 er=errorbar(i,nanmean(data(i,subm)),nanstd(data(i,subm))/sqrt(size(data(i,subm),2)));
 er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
@@ -295,7 +299,8 @@ hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 set(gca,'FontSize',12);box off;xticks(1:size(data,1));xticklabels(areas_abb);
-title(['MOp' ' (N=' num2str(length(subm)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
+title(['MOp' ' (N=' num2str(length(subm)) ')'],'FontWeight','bold','FontSize',12,'Color',col_m(3,:));ax = gca;ax.TitleHorizontalAlignment = 'right';
+set(gca,'TickDir','out'); 
 %% 
 
 %% %% Layer per area for homotopic contra areas comparison: VISp, SSbf, MOp RETROGRADE
@@ -330,7 +335,7 @@ set(gca,'FontSize',10);
 %title({'Homotopic layer origin of CPNs','to VISp, SSbf and MOp'});
 ylim([0 0.8]);box off;
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
-legend boxoff;set(gca,'FontSize',12);   
+legend boxoff;set(gca,'FontSize',12);   set(gca,'TickDir','out'); 
 %% Plot in heatmap across all areas RETROGRADE
 %VISp injeciton 
 datavis=[];datass=[];datam=[];endpoints=[];startpoints=[];all_vis=[];all_ss=[];all_m=[];
@@ -459,9 +464,9 @@ hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
-legend boxoff;set(gca,'FontSize',12);  box off;
+legend boxoff;set(gca,'FontSize',12);  box off;set(gca,'TickDir','out'); 
 %% 
-%% Plot all in an individual plot 
+%% Plot all in an individual plot USED THIS NOW
 subvis=[];subss=[];subm=[];
 subvis=find(cell2mat(batchopt.type)==2 & inject_area<2);
 subss=find(cell2mat(batchopt.type)==2 & inject_area==2);
@@ -474,7 +479,7 @@ fig1= figure;set(fig1, 'Name', 'Barplot groups');set(fig1, 'Position', [400, 500
 subplot(3,1,1)
 for i=1:size(data,1)
 hold on;
-b2=bar(i,nanmean(data(i,subvis)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+b2=bar(i,nanmean(data(i,subvis)));b2.FaceColor=[0.85 0.85 0.85];b2.LineWidth=1;b2.EdgeColor=[0 0 0];b2.FaceAlpha=0.3;
 hold on;
 er=errorbar(i,nanmean(data(i,subvis)),nanstd(data(i,subvis))/sqrt(size(data(i,subvis),2)));
 er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
@@ -484,13 +489,13 @@ hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;text(1,maxyline,'Vision');hold on;text(5.2,maxyline,'Somatosen.');hold on;text(9.5,maxyline,'Motor');hold on;text(16,maxyline,'Other');
 set(gca,'FontSize',12);box off;xticklabels([]);
-title(['VISp ' '(N=' num2str(length(subvis)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
-
+title(['VISp ' '(N=' num2str(length(subvis)) ')'],'FontWeight','bold','FontSize',12,'Color',col_m(1,:));ax = gca;ax.TitleHorizontalAlignment = 'right';
+set(gca,'TickDir','out'); 
 
 subplot(3,1,2)
 for i=1:size(data,1)
 hold on;
-b2=bar(i,nanmean(data(i,subss)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+b2=bar(i,nanmean(data(i,subss)));b2.FaceColor=[0.85 0.85 0.85];b2.LineWidth=1;b2.EdgeColor=[0 0 0];b2.FaceAlpha=0.3;
 hold on;
 er=errorbar(i,nanmean(data(i,subss)),nanstd(data(i,subss))/sqrt(size(data(i,subss),2)));
 er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
@@ -499,13 +504,13 @@ hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 set(gca,'FontSize',12);
-title(['SSbfd ' '(N=' num2str(length(subss)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
-box off;xticklabels([]);ylabel('Fraction of cells');
+title(['SSbfd ' '(N=' num2str(length(subss)) ')'],'FontWeight','bold','FontSize',12,'Color',col_m(2,:));ax = gca;ax.TitleHorizontalAlignment = 'right';
+box off;xticklabels([]);ylabel('Fraction of cells');set(gca,'TickDir','out'); 
 
 subplot(3,1,3)
 for i=1:size(data,1)
 hold on;
-b2=bar(i,nanmean(data(i,subm)));b2.FaceColor=[0.7 0.7 0.7];b2.LineWidth=1.2;
+b2=bar(i,nanmean(data(i,subm)));b2.FaceColor=[0.85 0.85 0.85];b2.LineWidth=1;b2.EdgeColor=[0 0 0];b2.FaceAlpha=0.3;
 hold on;
 er=errorbar(i,nanmean(data(i,subm)),nanstd(data(i,subm))/sqrt(size(data(i,subm),2)));
 er.Color = [0 0 0];er.LineWidth=1.2;er.LineStyle = 'none'; hold on;
@@ -514,8 +519,8 @@ hold on;line([4.5 4.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--'
 hold on;line([9.5 9.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 hold on;line([11.5 11.5],[0 maxyline],'linewidth',0.5,'Color','k','LineStyle','--');
 set(gca,'FontSize',12);box off;xticks(1:size(data,1));xticklabels(areas_abb);
-title(['MOp' ' (N=' num2str(length(subm)) ')'],'FontWeight','Normal','FontSize',12);ax = gca;ax.TitleHorizontalAlignment = 'right';
-ylim([0 maxyline])
+title(['MOp' ' (N=' num2str(length(subm)) ')'],'FontWeight','bold','FontSize',12,'Color',col_m(3,:));ax = gca;ax.TitleHorizontalAlignment = 'right';
+ylim([0 maxyline]);set(gca,'TickDir','out'); 
 %% %% Layer per area for homtopic contra areas comparison ANTEROGRADE
 datavis=[];datass=[];datam=[];
 datavis=visp_layers_all(1:6,subvis)./sum(visp_layers_all(1:6,subvis));
@@ -548,7 +553,7 @@ set(gca,'FontSize',10);
 ylim([0 0.8]);box off;
 %title({'Homotopic layer projection targets of CPNs','from VISp, SSbf and MOp'});
 leg=legend({['VISp ' 'N=' num2str(length(subvis))], ['SSbf ' 'N=' num2str(length(subss))],['MOp ' 'N=' num2str(length(subm))]});
-legend boxoff;set(gca,'FontSize',12);   
+legend boxoff;set(gca,'FontSize',12); set(gca,'TickDir','out');   
 %% %% Plot in heatmap across all areas Anterograde
 %% Plot in heatmap across all areas RETROGRADE
 %VISp injeciton 
