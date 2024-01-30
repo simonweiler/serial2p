@@ -37,12 +37,25 @@ value2_all=temp_metric2-temp_metric1;
 %xSEM
 xerr=[];
 xerr=nanstd(temp_metric1);
-xerr=xerr/sqrt(length(xerr(~isnan(xerr))));
+temp_div=[];
+for m=1:45
+    temp_z=[];
+    temp_z=temp_metric1(:,m);
+temp_div(m)=sqrt(length(temp_z(~isnan(temp_z))));
+end
+xerr=xerr./temp_div;
 
 %ySEM
 yerr=[];
 yerr=nanstd(temp_metric2-temp_metric1);
-yerr=yerr/sqrt(length(yerr(~isnan(yerr))));
+temp_div=[];
+for m=1:45
+    temp_z=[];
+    temp_z=temp_metric2(:,m)-temp_metric1(:,m);
+temp_div(m)=sqrt(length(temp_z(~isnan(temp_z))));
+end
+yerr=yerr./temp_div;
+
 %average correlation 
 [r_avg p_avg] = corr(value1',value2','Type','Spearman','Rows','complete');
 end
