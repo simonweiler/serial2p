@@ -223,6 +223,54 @@ presults = multcompare(stats)
 presults = multcompare(stats)
 [p,tbl,stats] = anova1([temp_p+temp_p2])
 presults = multcompare(stats)
+%% Same but horzontally rotated
+temp_color=[v1_color ;s1_color; m1_color];
+%ipsi_total numbers area
+p1=[];p1=sum(v1a_tiam>0);p2=[];p2=sum(s1a_tiam>0);p3=[];p3=sum(m1a_tiam>0);
+%contra_total numbers area
+p4=[];p4=sum(v1a_tcam>0);p5=[];p5=sum(s1a_tcam>0);p6=[];p6=sum(m1a_tcam>0);
+temp_p= [p1' p2' p3'];temp_p2= [p4' p5' p6'];
+%plot
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 300, 400]);set(gcf,'color','w');
+for i=1:3
+    hold on;
+     b2=bar([i*3],[nanmean(temp_p(:,i))]);hold on;b2.FaceColor=[0.8 0.8 0.8];b2.EdgeColor=temp_color(i,:);b2.LineWidth=1.4;set(b2,'ShowBaseLine','off')
+    hold on;b1=bar([i*3],[nanmean(temp_p2(:,i))]);hold on;b1.FaceColor=[0.3 0.3 0.3];b1.EdgeColor=temp_color(i,:);set(b1,'ShowBaseLine','off')
+   
+    hold on;errorbar([i*3],[nanmean(temp_p(:,i))],[nanstd(temp_p(:,i))/sqrt(length(temp_p(:,i)))]...
+     , 'LineStyle', 'none', ... 
+         'Color', 'k', 'LineWidth', 1.2);hold on;
+     hold on;errorbar([i*3],[nanmean(temp_p2(:,i))],[nanstd(temp_p2(:,i))/sqrt(length(temp_p2(:,i)))]...
+     , 'LineStyle', 'none', ... 
+         'Color', 'w', 'LineWidth', 1.2);hold on;
+    set(gca,'View',[90 90])
+end
+xticks([2:3:9]);hold on;box off;xticklabels({[]});ylabel('Nr of areas');
+
+t1=text(2.3,16,num2str(round(nanmean(p4)),2),'FontSize',11,'Color','k');set(t1,'Rotation',0);
+t1=text(2.3,36,num2str(round(nanmean(p1)),2),'FontSize',11);set(t1,'Rotation',0);
+t1=text(3.7,13,'contra','FontSize',11);set(t1,'Rotation',0);
+t1=text(3.7,35,'ipsi','FontSize',11);set(t1,'Rotation',0);
+
+text(5.3,18,num2str(round(nanmean(p5)),2),'FontSize',11,'Color','k');
+text(5.3,39,num2str(round(nanmean(p2)),2),'FontSize',11);
+t1=text(6.7,15,'contra','FontSize',11);set(t1,'Rotation',0);
+t1=text(6.7,38,'ipsi','FontSize',11);set(t1,'Rotation',0);
+
+text(8.3,13,num2str(round(nanmean(p6)),2),'FontSize',11,'Color','k');
+text(8.3,27,num2str(round(nanmean(p3)),2),'FontSize',11);
+t1=text(9.7,10,'contra','FontSize',11);set(t1,'Rotation',0);
+t1=text(9.7,26,'ipsi','FontSize',11);set(t1,'Rotation',0);
+
+set(gca,'FontSize',11);set(gca,'TickDir','out');box off;xtickangle(45);%
+ ylim([-1 45]);axis off
+ %stats
+[p,tbl,stats] = anova1([temp_p])
+presults = multcompare(stats)
+[p,tbl,stats] = anova1([temp_p2])
+presults = multcompare(stats)
+[p,tbl,stats] = anova1([temp_p+temp_p2])
+presults = multcompare(stats)
 %% Correlation between hemisphere areas R2 square of fraction per area avergae across injection areas
 %Calculate R2 and slope of correlation 
 %V1
@@ -358,22 +406,23 @@ h = gca;h.XAxis.Visible = 'off';
 text(0.75,-0.04,'L2/3','FontSize',11);text(1.9,-0.04,'L4','FontSize',11);text(2.9,-0.04,'L5','FontSize',11);text(3.9,-0.04,'L6a','FontSize',11);text(4.9,-0.04,'L6b','FontSize',11);
 %hold on;text(0.75,0.6,['**'],'FontSize',18);hold on;text(3.75,0.6,['*'],'FontSize',18);legend({'ipsi','contra'},"Location","northeast");legend boxoff;title('MOp','Color',m1_color)
 %% Heatmaps L6a sorted for ipsi and contra
+%IPSI
 %dat_all={};dat_all={c_v1aam c_s1aam c_m1aam};
 %dat_all2={};dat_all2={v1a_rcam s1a_rcam m1a_rcam};
 dat_all={};dat_all={i_v1aam i_s1aam i_m1aam};
 dat_all2={};dat_all2={v1a_riam s1a_riam m1a_riam};
 temp_color=[v1_color ;s1_color; m1_color];
 %panel_tit={'contra VISp','contra SSp-bfd','contra MOp'};
-panel_tit={'ipsi VISp','ipsi SSp-bfd','ipsi MOp'};
+panel_tit={'VISp','SSp-bfd','MOp'};
 cortex_abb=[];cortex_abb=cortex_names(:,2);
 
 for j=1:3
 p1=[];p1=nanmean(dat_all{j},3);
-p2=[];p2=nanmean(dat_all3{j},3)
+%p2=[];p2=nanmean(dat_all3{j},3)
 idx_ke=find(sum(dat_all2{j}>0,2)>1);
-idx_ke2=find(sum(dat_all4{j}>0,2)>1);
+% idx_ke2=find(sum(dat_all4{j}>0,2)>1);
 p1e=[];p1e=p1(:,idx_ke);
-p2e=[];p2e=p2(:,idx_ke);
+% p2e=[];p2e=p2(:,idx_ke);
 cortex_abb_e=[];
 cortex_abb_e=cortex_abb(idx_ke);
 ind=[];
@@ -387,15 +436,25 @@ kk1=[];kk2=[];kk3=[];
 [l5_p1 kk2]=sort(p1e(4,l5_an));
 [l6_p1 kk3]=sort(p1e(5,l6_an));
 
-tem_cm=[];tem_cm=[p1e(2:end,l23_an(kk1)) zeros(5,2)*NaN p1e(2:end,l5_an(kk2)) zeros(5,2)*NaN p1e(2:end,l6_an(kk3))];
-tem_cm2=[];tem_cm2=[p2e(2:end,l23_an(kk1)) zeros(5,2)*NaN p2e(2:end,l5_an(kk2)) zeros(5,2)*NaN p2e(2:end,l6_an(kk3))];
+tem_cm=[];tem_cm=[p1e(2:end,l23_an(kk1)) ones(5,2)*1 p1e(2:end,l5_an(kk2)) ones(5,2)*1 p1e(2:end,l6_an(kk3))];
+%tem_cm2=[];tem_cm2=[p2e(2:end,l23_an(kk1)) zeros(5,2)*NaN p2e(2:end,l5_an(kk2)) zeros(5,2)*NaN p2e(2:end,l6_an(kk3))];
 p3=[];p3=[cortex_abb_e(l23_an(kk1)) ;'.';'.';cortex_abb_e(l5_an(kk2));'.';'.' ;cortex_abb_e(l6_an(kk3))];
 
-fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 700, 160]);set(gcf,'color','w');tiledlayout("horizontal")
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 1000-250*j, 750, 160]);set(gcf,'color','w');tiledlayout("horizontal")
 nexttile
 h=imagesc(tem_cm);
 set(h, 'AlphaData', ~isnan(tem_cm))
-cmap(temp_color(j,:),100,5,5);colorbar;box off;xticks([1:length(tem_cm)])
+cmap(temp_color(j,:),100,0.5,0.5);colorbar;
+[hh oo]=find(isnan(tem_cm));
+coord_b=[oo hh];
+for u=1:length(coord_b)
+    hold on
+    text(coord_b(u,1)-0.3,coord_b(u,2)-0.15,'x','FontSize',14,'Color','k')
+end
+offsetAxes;
+
+box off;xticks([1:length(tem_cm)]);
+%ylim([1 5.5])
 hold on;xticklabels(p3);yticklabels({'L2/3','L4','L5','L6a','L6b'})
 title(panel_tit{j})
 %text(-1,-0.3,'L2/3 dom');
@@ -424,6 +483,73 @@ set(gca,'TickDir','out');box off;set(gca,'FontSize',10)
 % cmap(temp_color(j,:),100,5,5);colorbar;box off;xticks([1:length(tem_cm)])
 % hold on;xticklabels(p3);
 % title(panel_tit{j})
+end
+
+%Contra
+
+dat_all={};dat_all={c_v1aam c_s1aam c_m1aam};
+dat_all2={};dat_all2={v1a_rcam s1a_rcam m1a_rcam};
+temp_color=[v1_color ;s1_color; m1_color];
+panel_tit={'VISp','SSp-bfd','MOp'};
+cortex_abb=[];cortex_abb=cortex_names(:,2);
+
+for j=1:3
+p1=[];p1=nanmean(dat_all{j},3);
+%p2=[];p2=nanmean(dat_all3{j},3)
+idx_ke=find(sum(dat_all2{j}>0,2)>1);
+% idx_ke2=find(sum(dat_all4{j}>0,2)>1);
+p1e=[];p1e=p1(:,idx_ke);
+% p2e=[];p2e=p2(:,idx_ke);
+cortex_abb_e=[];
+cortex_abb_e=cortex_abb(idx_ke);
+ind=[];
+[X, ind]=nanmax(p1e,[],1);
+l6_an=[];l5_an=[];l23_an=[];
+l6_an=find(ind==5);
+l5_an=find(ind==4);
+l23_an=find(ind==2);
+kk1=[];kk2=[];kk3=[];
+[l23_p1 kk1 ]=sort(p1e(2,l23_an));
+[l5_p1 kk2]=sort(p1e(4,l5_an));
+[l6_p1 kk3]=sort(p1e(5,l6_an));
+
+tem_cm=[];tem_cm=[p1e(2:end,l23_an(kk1)) ones(5,2)*1 p1e(2:end,l5_an(kk2)) ones(5,2)*1 p1e(2:end,l6_an(kk3))];
+%tem_cm2=[];tem_cm2=[p2e(2:end,l23_an(kk1)) zeros(5,2)*NaN p2e(2:end,l5_an(kk2)) zeros(5,2)*NaN p2e(2:end,l6_an(kk3))];
+p3=[];p3=[cortex_abb_e(l23_an(kk1)) ;'.';'.';cortex_abb_e(l5_an(kk2));'.';'.' ;cortex_abb_e(l6_an(kk3))];
+
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [1300, 1000-250*j, 750, 160]);set(gcf,'color','w');tiledlayout("horizontal")
+nexttile
+h=imagesc(tem_cm);
+set(h, 'AlphaData', ~isnan(tem_cm))
+cmap(temp_color(j,:),100,0.5,0.5);colorbar;
+[hh oo]=find(isnan(tem_cm));
+coord_b=[oo hh];
+for u=1:length(coord_b)
+    hold on
+    text(coord_b(u,1)-0.3,coord_b(u,2)-0.15,'x','FontSize',14,'Color','k')
+end
+offsetAxes;
+
+box off;;xticks([1:length(tem_cm)]);
+
+hold on;xticklabels(p3);xtickangle(90);yticklabels({'L2/3','L4','L5','L6a','L6b'})
+title(panel_tit{j})
+text(-1,-0.3,'L2/3 dom');
+
+if j==1 
+text(10,-0.3,'L5 dom');
+text(31,-0.3,'L6 dom'); 
+
+elseif j==2
+  text(14,-0.3,'L5 dom');  
+  text(36,-0.3,'L6 dom'); 
+ 
+else
+  text(6,-0.3,'L5 dom');  
+   
+end
+set(gca,'TickDir','out');box off;set(gca,'FontSize',10)
+
 end
 %% Plot delta ipsi-contra for VISp SSp and MOp
 %calculate delta across VISp SSp and MOp
@@ -737,7 +863,7 @@ temp_c1=[0.8 0.8 0.8];
 temp_c2=[0.3 0.3 0.3];
 idx=[];idx=1;
 
-fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 200, 250]);set(gcf,'color','w');
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 400, 250]);set(gcf,'color','w');
 t1_all=[];t2_all=[];
 for j=1:3
 rm1=[];rm2=[];rm1=dat_all1{j};rm2=dat_all2{j};
@@ -760,6 +886,7 @@ h1=histogram(t1_all,20,'Normalization','probability');hold on;h1.EdgeColor=temp_
 hold on;h2=histogram(t2_all,20,'Normalization','probability');hold on;h2.EdgeColor=temp_c2;h2.FaceColor='w';h2.FaceAlpha=0.2;h2.LineWidth=1.5;h2.BinWidth = bwi;
 ylabel('Fraction of areas');xlabel('ILN');set(gca,'FontSize',11);set(gca,'TickDir','out');
 text(0,0.25,'ipsi','FontSize',11,'Color',temp_c1);text(0,0.225,'contra','FontSize',11,'Color',temp_c2);
+hold on;line([0.5 0.5],[0 0.3],'Color','k','LineStyle','--')
 offsetAxes
 
 %% 
@@ -775,7 +902,7 @@ temp_c1=[0.8 0.8 0.8];
 temp_c2=[0.3 0.3 0.3];
 idx=[];idx=1;
 
-fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 400, 450]);set(gcf,'color','w');t=tiledlayout('vertical');
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 350, 330]);set(gcf,'color','w');t=tiledlayout('vertical');
 t.TileSpacing = 'compact';t.Padding = 'compact';
 for j=1:3
 rm1=[];rm2=[];rm1=dat_all1{j};rm2=dat_all2{j};
@@ -799,23 +926,29 @@ for i=1:6
     yerr2=[];yerr2=nanstd(nanmean(temp_metric2(:,idx_modules{i}),2))/sqrt(length(nanstd(temp_metric2(:,idx_modules{i}),[],2)));
     ymean1=[];ymean1=nanmean(temp_metric1(:,idx_modules{i}),2);
     ymean2=[];ymean2=nanmean(temp_metric2(:,idx_modules{i}),2);
-    hold on;h=errorbar([i],[nanmean(ymean2)],[yerr2], 'LineStyle', 'none','Color', temp_c1, 'LineWidth', 0.5,'CapSize',0);
-    hold on;h=errorbar([i],[nanmean(ymean1)],[yerr1], 'LineStyle', 'none','Color', temp_c1, 'LineWidth', 1,'CapSize',0);
-    pp1=scatter(i,nanmean(ymean1),30,'filled');pp1.MarkerEdgeColor=[1 1 1];pp1.MarkerFaceAlpha=1;pp1.MarkerFaceColor=temp_c1;
-    pp1=scatter(i,nanmean(ymean2),30,'filled');pp1.MarkerEdgeColor=[1 1 1];pp1.MarkerFaceAlpha=1;pp1.MarkerFaceColor=temp_c2;box off;
+    % hold on;h=errorbar([i],[nanmean(ymean2)],[yerr2], 'LineStyle', 'none','Color', temp_c1, 'LineWidth', 0.5,'CapSize',0);
+    % hold on;h=errorbar([i],[nanmean(ymean1)],[yerr1], 'LineStyle', 'none','Color', temp_c1, 'LineWidth', 1,'CapSize',0);
+    ymean_all=[];ymean_all=[nanmean(ymean1) nanmean(ymean2)];
+    b1=bar(i,ymean_all);hold on;b1(2).FaceColor=temp_c2;b1(1).FaceColor=temp_c1;set(b1,'ShowBaseLine','off');
+    hold on;h=errorbar([i-0.15],[nanmean(ymean1)],[yerr1], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+    hold on;h=errorbar([i+0.15],[nanmean(ymean2)],[yerr2], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+    % pp1=scatter(i,nanmean(ymean1),30,'filled');pp1.MarkerEdgeColor=[1 1 1];pp1.MarkerFaceAlpha=1;pp1.MarkerFaceColor=temp_c1;
+    % pp1=scatter(i,nanmean(ymean2),30,'filled');pp1.MarkerEdgeColor=[1 1 1];pp1.MarkerFaceAlpha=1;pp1.MarkerFaceColor=temp_c2;box off;
+    box off;
 end
 if j==1 
-xlim([1 6]);
- text(5.5,1.1,'ipsi','Color',temp_c1);text(5.5,1.02,'contra','Color',temp_c2);
+xlim([0.5 6.5]);
+ text(5.5,1.2,'ipsi','Color',temp_c1);text(5.5,1.1,'contra','Color',temp_c2);
 set(gca,'FontSize',11);set(gca,'TickDir','out');
 h = gca;h.XAxis.Visible = 'off';
+yticks([0.5:0.2:1])
 
 elseif j==2
     set(gca,'FontSize',11);set(gca,'TickDir','out');
-    xlim([1 6]);h = gca;h.XAxis.Visible = 'off'; ylabel('ILN');
+    xlim([0.5 6.5]);;h = gca;h.XAxis.Visible = 'off'; ylabel('ILN');yticks([0.5:0.2:1])
 else
-    xlim([1 6])
-    xticks([1:6]);xticklabels(module_names)
+   xlim([0.5 6.5]);
+    xticks([1:6]);xticklabels(module_names);xtickangle(0);yticks([0.5:0.2:1])
     set(gca,'FontSize',11);set(gca,'TickDir','out');   
 end
 offsetAxes
@@ -842,10 +975,13 @@ hold on;text(0.65,0.7-(0.06*i),...
     ['r= ' num2str(round(nanmean(r_a),2)) ' +- ' num2str(round(nanstd(r_a)/sqrt(length(r_a)),2))],'FontSize',11,'Color',temp_c);
 %hold on;text(0.5,0.5-(0.05*i),['p= ' num2str(round(nanmean(p_a),2))],'FontSize',11,'Color',temp_c);
 end
+ylim([-0.4 0.8])
+hold on;line([0.5 0.5],[-0.4 0.8],'Color','k','LineStyle','--')
 %ylabel('L6d_c - L6d_i');xlabel('L6d_i');
 ylabel('ILN contra - ILN ipsi');xlabel('ILN ipsi');
 axis square;set(gca,'FontSize',11);set(gca,'TickDir','out');box off;
 offsetAxes
+
 %% Sorted modules ILNc-ILNi DIfferences of ILN, sensory have higher difference ipsi contra than 'higher brain areas'
 idx=[];idx=1;
 temp_all={i_v1aam c_v1aam; i_s1aam c_s1aam; i_m1aam c_m1aam};
@@ -879,7 +1015,13 @@ order_err=err_sem(kk);
     , 'LineStyle', 'none', ... 
          'Color', 'k', 'LineWidth', 1);hold on;set(b1,'ShowBaseLine','off');
  end
- xticks([1:6]);hold on;box off;xticklabels(module_names(kk));set(gca,'FontSize',11);set(gca,'TickDir','out');box off;
+ xticks([1:6]);hold on;box off;xticklabels(module_names(kk))
+ax=gca
+ax.XTickLabel{1} = ['\color{red}' ax.XTickLabel{1}];
+ax.XTickLabel{2} = ['\color{red}' ax.XTickLabel{2}];
+ax.XTickLabel{3} = ['\color{red}' ax.XTickLabel{3}];
+
+ set(gca,'FontSize',11);set(gca,'TickDir','out');box off;
  xtickangle(45);
  ylim([-0.14 0.3]);
  ylabel('ILN contra - ILN ipsi');
@@ -896,6 +1038,53 @@ text(0.1,0.35,'sorted by largest delta');
 % presults = multcompare(stats)
 offsetAxes
 end
+
+%% Average in two major areas
+
+idx=1;
+temp_all={i_v1aam c_v1aam; i_s1aam c_s1aam; i_m1aam c_m1aam};
+temp_color=[v1_color ;s1_color; m1_color];
+senso_mo=[idx_modules{3} idx_modules{4} idx_modules{6}];
+higher_a=[idx_modules{1} idx_modules{2} idx_modules{5}];
+
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 520, 220]);set(gcf,'color','w');t=tiledlayout('horizontal');
+t.TileSpacing = 'compact';t.Padding = 'compact';  
+for i=1:3
+    nexttile
+rm1=[];rm1=temp_all{i,1};rm2=[];rm2=temp_all{i,2};
+[vali_all valdci_all val_i val_dci xerr yerr r_a p_a r_avg p_avg] = anatomy_correlation(rm1, rm2, idx);
+[u p1]=ttest(nanmean(valdci_all(:,higher_a),2),nanmean(valdci_all(:,senso_mo),2))
+b1=bar(1,nanmean(nanmean(valdci_all(:,senso_mo),2)));b1.FaceColor='r';hold on;
+b2=bar(2,nanmean(nanmean(valdci_all(:,higher_a),2)));b2.FaceColor=[0.9 0.9 0.9];set(b1,'ShowBaseLine','off');set(b2,'ShowBaseLine','off');
+   hold on;errorbar([1],[nanmean(nanmean(valdci_all(:,senso_mo),2))],[nanstd(nanmean(valdci_all(:,senso_mo),2))/sqrt(length(nanmean(valdci_all(:,senso_mo),2)))]...
+     , 'LineStyle', 'none', ... 
+          'Color', 'k', 'LineWidth', 1);hold on;set(b1,'ShowBaseLine','off');
+    hold on;errorbar([2],[nanmean(nanmean(valdci_all(:,higher_a),2))],[nanstd(nanmean(valdci_all(:,higher_a),2))/sqrt(length(nanmean(valdci_all(:,higher_a),2)))]...
+     , 'LineStyle', 'none', ... 
+          'Color', 'k', 'LineWidth', 1);hold on;set(b1,'ShowBaseLine','off');
+
+hold on;box off
+xticks([1:2])
+xlim([0 2.5])
+   
+     set(gca,'FontSize',11);set(gca,'TickDir','out');box off;
+  
+xticklabels({'se-mo','f-m-l'})
+ ylim([0 0.25]);
+ ylabel('ILN contra - ILN ipsi');
+ if i==1
+%h = gca;h.XAxis.Visible = 'off';
+ elseif i==2
+h = gca;h.YAxis.Visible = 'off';
+
+ else i==3
+  h = gca;h.YAxis.Visible = 'off';   
+
+ end
+
+offsetAxes
+end
+
 %% Plotte cahnges across modalities for areas
 idx=[];idx=1;
 temp_all={i_v1aam c_v1aam; i_s1aam c_s1aam; i_m1aam c_m1aam};
@@ -930,21 +1119,9 @@ hold on;text(0.2,0.6,...
 ylabel('VISp ILN contra - ILN ipsi');xlabel('SSp-bfd ILN contra - ILN ipsi');
 axis square;set(gca,'FontSize',11);set(gca,'TickDir','out');box off;
 offsetAxes;
-%% 
 
-%% 
-idx=1;
-temp_all={i_v1aam c_v1aam; i_s1aam c_s1aam; i_m1aam c_m1aam};
-temp_color=[v1_color ;s1_color; m1_color];
-senso_mo=[idx_modules{3} idx_modules{4} idx_modules{6}];
-higher_a=[idx_modules{1} idx_modules{2} idx_modules{5}];
 
-fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 350, 350]);set(gcf,'color','w');
-for i=1:3
-rm1=[];rm1=temp_all{i,1};rm2=[];rm2=temp_all{i,2};
-[vali_all valdci_all val_i val_dci xerr yerr r_a p_a r_avg p_avg] = anatomy_correlation(rm1, rm2, idx);
-[u p1]=ttest(nanmean(valdci_all(:,higher_a),2),nanmean(valdci_all(:,senso_mo),2))
-end
+%% FIGURE 4
 
 %% L23 vs L5 and L6a 
 dat_all1={};dat_all1={i_v1aam i_s1aam i_m1aam};
@@ -961,10 +1138,10 @@ t.TileSpacing = 'compact';t.Padding = 'compact';
 for j=1:3
     
 rm1=[];rm2=[];rm1=dat_all1{j};rm2=dat_all2{j};
-hdi_l23=(nanmean(rm2(2,:,:),3)-nanmean(rm1(2,:,:),3))./(nanmean(rm2(2,:,:),3)+nanmean(rm1(2,:,:),3));
-hdi_l56=(nanmean(sum(rm2(4:5,:,:)),3)-nanmean(sum(rm1(4:5,:,:)),3))./(nanmean(sum(rm2(4:5,:,:)),3)+nanmean(sum(rm1(4:5,:,:)),3));
-hdi_l5=(nanmean(rm2(4,:,:),3)-nanmean(rm1(4,:,:),3))./(nanmean(rm2(4,:,:),3)+nanmean(rm1(4,:,:),3));
-hdi_l6=(nanmean(rm2(5,:,:),3)-nanmean(rm1(5,:,:),3))./(nanmean(rm2(5,:,:),3)+nanmean(rm1(5,:,:),3));
+hdi_l23=(nanmean(rm2(2,:,:),3)-nanmean(rm1(2,:,:),3));
+hdi_l56=(nanmean(sum(rm2(4:5,:,:)),3)-nanmean(sum(rm1(4:5,:,:)),3));
+hdi_l5=(nanmean(rm2(4,:,:),3)-nanmean(rm1(4,:,:),3));
+hdi_l6=(nanmean(rm2(5,:,:),3)-nanmean(rm1(5,:,:),3));
 
 %ymean1=[];ymean1=nanmean(squeeze(rm1(2,idx_modules{i},:)));
 nexttile
@@ -979,7 +1156,7 @@ ymean_all=[];ymean_all=[ymean2 ymean3 ymean4];
 yerr2=nanstd(hdi_l23(idx_modules{order_om(i)}))/sqrt(6);
 yerr3=nanstd(hdi_l5(idx_modules{order_om(i)}))/sqrt(6);
 yerr4=nanstd(hdi_l6(idx_modules{order_om(i)}))/sqrt(6);
- if j==3 & i==1 | j==3 & i==2
+ if j==3 & i==1 
      b1=bar(i,[0 0 0]);hold on;b1(1).FaceColor=[1 1 1];b1(2).FaceColor=[0.5 0.5 0.5];%b1(3).FaceColor=[0.55 0.55 0.55];
      set(b1,'ShowBaseLine','off');
  hold on;h=errorbar([i-0.26],[0],[0], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
