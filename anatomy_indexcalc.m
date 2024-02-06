@@ -11,9 +11,11 @@ h_index(i)=1-((layers(2,i)+layers(3,i)) / (layers(2,i)+layers(3,i)+layers(4,i)))
 %5) pure L6a
 %(L6a)/(L23 + L5 +L6ab)
 pL6a(i)=(layers(5,i)) / (layers(2,i)+layers(4,i)+layers(5,i)+layers(6,i));
+%6) fraction layer 6a/5
+pL6aL5(i)=(layers(5,i)) / (layers(4,i));
 end
 
-indexcalc=[iln' L6i' L6ai' h_index' pL6a'];
+indexcalc=[iln' L6i' L6ai' h_index' pL6a' pL6aL5'];
 
 for k=1:size(indexcalc,2)
     if sum(isnan(indexcalc(:,k)))>=size(indexcalc,2)-1

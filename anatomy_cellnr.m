@@ -55,8 +55,8 @@ for i=1:length(type)
     for m=1:length(cortex_names)
        temp_li=[];temp_lc=[];
        for l=2:6
-       temp_li(l)=nansum(ipsi_all(l,m))/(nansum(ipsi_all(:,m))-nansum(ipsi_all(1,m)));
-       temp_lc(l)=nansum(contra_all(l,m))/(nansum(contra_all(:,m))-nansum(contra_all(1,m)));
+       temp_li(l)=sum(ipsi_all(l,m))/(nansum(ipsi_all(:,m))-nansum(ipsi_all(1,m)));
+       temp_lc(l)=sum(contra_all(l,m))/(nansum(contra_all(:,m))-nansum(contra_all(1,m)));
        end
     area_li(:,m)=temp_li;
     area_lc(:,m)=temp_lc;
