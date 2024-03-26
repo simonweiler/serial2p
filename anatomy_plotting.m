@@ -450,74 +450,100 @@ s1_hemi=(s1a_rcam2-s1a_riam)./(s1a_rcam2+s1a_riam);
 m1_hemi=(m1a_rcam2-m1a_riam)./(m1a_rcam2+m1a_riam);
 %% Plot 
 
+%% 
+
 temp_color=[v1_color ;s1_color; m1_color];
+hemi_all={v1_hemi s1_hemi m1_hemi};
+temp_data_i={v1a_riam s1a_riam m1a_riam};
+temp_data_c={v1a_rcam2 s1a_rcam2 m1a_rcam};
 panel_title={'VISp','SSp-bfd','MOp'};
+crt_all1={};
 fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 1200, 600]);set(gcf,'color','w');tiledlayout("horizontal")
+for i=1:3
 nexttile
-[p_bin p_bin_c] = anatomy_testarea(v1_hemi);
-errx_l=[];errx_l=[nanstd(v1a_riam(find(p_bin>0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(v1a_rcam2(find(p_bin>0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(v1a_riam(find(p_bin>0),:),2),nanmean(v1a_rcam2(find(p_bin>0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-errx_l=[];errx_l=[nanstd(v1a_riam(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(v1a_rcam2(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(v1a_riam(find(p_bin_c>0),:),2),nanmean(v1a_rcam2(find(p_bin_c>0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-errx_l=[];errx_l=[nanstd(v1a_riam(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(v1a_rcam2(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(v1a_riam(find(p_bin==0 & p_bin_c==0),:),2),nanmean(v1a_rcam2(find(p_bin==0 & p_bin_c==0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-%h(2).LineStyle='none';h(2).Color='k';h(3).Color='k';hold on
-loglog(nanmean(v1a_riam(find(p_bin>0),:),2),nanmean(v1a_rcam2(find(p_bin>0),:),2),'o','MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');hold on;
-loglog(nanmean(v1a_riam(find(p_bin_c>0),:),2),nanmean(v1a_rcam2(find(p_bin_c>0),:),2),'o','MarkerFaceColor',[0.3 0.3 0.3],'MarkerEdgeColor','k');hold on;
-loglog(nanmean(v1a_riam(find(p_bin==0 & p_bin_c==0),:),2),nanmean(v1a_rcam2(find(p_bin==0 & p_bin_c==0),:),2),'o','MarkerFaceColor',[1 1 1],'MarkerEdgeColor','k');hold on;axis square
-xlabel('Ipsi fraction (log)');ylabel('Contra fraction (log)');set(gca,'FontSize',11);set(gca,'TickDir','out');box off;title(panel_title{1},'Color',temp_color(1,:),'FontWeight','normal');
-%xticklabels({'0.0001', '0.01','','0.1'})
-%yticklabels({'', '0.01','','0.1'})
-set(gca, 'XScale','log', 'YScale','log')
-
-nexttile
-[p_bin p_bin_c] = anatomy_testarea(s1_hemi);
-errx_l=[];errx_l=[nanstd(s1a_riam(find(p_bin>0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(s1a_rcam2(find(p_bin>0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(s1a_riam(find(p_bin>0),:),2),nanmean(s1a_rcam2(find(p_bin>0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-errx_l=[];errx_l=[nanstd(s1a_riam(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(s1a_rcam2(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(s1a_riam(find(p_bin_c>0),:),2),nanmean(s1a_rcam2(find(p_bin_c>0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-errx_l=[];errx_l=[nanstd(s1a_riam(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(s1a_rcam2(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(s1a_riam(find(p_bin==0 & p_bin_c==0),:),2),nanmean(s1a_rcam2(find(p_bin==0 & p_bin_c==0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-loglog(nanmean(s1a_riam(find(p_bin>0),:),2),nanmean(s1a_rcam2(find(p_bin>0),:),2),'o','MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');hold on;
-loglog(nanmean(s1a_riam(find(p_bin_c>0),:),2),nanmean(s1a_rcam2(find(p_bin_c>0),:),2),'o','MarkerFaceColor',[0.3 0.3 0.3],'MarkerEdgeColor','k');hold on;
-loglog(nanmean(s1a_riam(find(p_bin==0 & p_bin_c==0),:),2),nanmean(s1a_rcam2(find(p_bin==0 & p_bin_c==0),:),2),'o','MarkerFaceColor',[1 1 1],'MarkerEdgeColor','k');hold on;axis square
-xlabel('Ipsi fraction (log)');ylabel('Contra fraction (log)');set(gca,'FontSize',11);set(gca,'TickDir','out');box off;title(panel_title{2},'Color',temp_color(2,:),'FontWeight','normal');
-%xticklabels({'0.01'})
-%yticklabels({'0.0001','0.01'})
+[p_bin p_bin_c] = anatomy_testarea(hemi_all{i});
+rm1=[];rm2=[];
+rm1=temp_data_i{i};rm2=temp_data_c{i};
+%1)
+errx_l=[];errx_l=[nanstd(rm1(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
+erry_l=[];erry_l=[nanstd(rm2(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
+temp_datax=[];temp_datay=[];diferrx=[];diferry=[];
+temp_datax=nanmean(rm1(find(p_bin==0 & p_bin_c==0),:),2);
+temp_datay=nanmean(rm2(find(p_bin==0 & p_bin_c==0),:),2);
+diferrx=temp_datax-errx_l;
+diferry=temp_datay-erry_l;
+h=ploterr(temp_datax,temp_datay,errx_l,erry_l,'logx','logy','hhxy',0);
+h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on;
+crti=find(diferrx<0 | diferry<0);
+crt_all1{i}=crti;
+if isempty(crti)==0
+for k=1:length(crti)
+l1=line([temp_datax(crti(k)) temp_datax(crti(k))+errx_l(crti(k))],[temp_datay(crti(k)) temp_datay(crti(k))],'Color',[0.9 0.9 0.9]);
+l1=line([temp_datax(crti(k)) temp_datax(crti(k))],[temp_datay(crti(k)) temp_datay(crti(k))+erry_l(crti(k))],'Color',[0.9 0.9 0.9]);
+end
+end
+%2)
+errx_l=[];errx_l=[nanstd(rm1(find(p_bin>0),:),[],2)]/sqrt(length(6));
+erry_l=[];erry_l=[nanstd(rm2(find(p_bin>0),:),[],2)]/sqrt(length(6));
+temp_datax=[];temp_datay=[];diferrx=[];diferry=[];
+temp_datax=nanmean(rm1(find(p_bin>0),:),2);
+temp_datay=nanmean(rm2(find(p_bin>0),:),2);
+diferrx=temp_datax-errx_l;
+diferry=temp_datay-erry_l;
+h=ploterr(temp_datax,temp_datay,errx_l,erry_l,'logx','logy','hhxy',0);
+h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on;
+crti=find(diferrx<0 | diferry<0);
+if isempty(crti)==0
+for k=1:length(crti)
+l1=line([temp_datax(crti(k)) temp_datax(crti(k))+errx_l(crti(k))],[temp_datay(crti(k)) temp_datay(crti(k))],'Color',[0.9 0.9 0.9]);
+l1=line([temp_datax(crti(k)) temp_datax(crti(k))],[temp_datay(crti(k)) temp_datay(crti(k))+erry_l(crti(k))],'Color',[0.9 0.9 0.9]);
+end
+end
 
 
-nexttile
-[p_bin p_bin_c] = anatomy_testarea(m1_hemi);
-errx_l=[];errx_l=[nanstd(m1a_riam(find(p_bin>0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(m1a_rcam2(find(p_bin>0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(m1a_riam(find(p_bin>0),:),2),nanmean(m1a_rcam2(find(p_bin>0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-errx_l=[];errx_l=[nanstd(m1a_riam(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(m1a_rcam2(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(m1a_riam(find(p_bin_c>0),:),2),nanmean(m1a_rcam2(find(p_bin_c>0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-errx_l=[];errx_l=[nanstd(m1a_riam(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
-erry_l=[];erry_l=[nanstd(m1a_rcam2(find(p_bin==0 & p_bin_c==0),:),[],2)]/sqrt(length(6));
-h=ploterr(nanmean(m1a_riam(find(p_bin==0 & p_bin_c==0),:),2),nanmean(m1a_rcam2(find(p_bin==0 & p_bin_c==0),:),2),errx_l,erry_l,'logx','logy','hhxy',0)
-h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on
-loglog(nanmean(m1a_riam(find(p_bin>0),:),2),nanmean(m1a_rcam2(find(p_bin>0),:),2),'o','MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');hold on;
-loglog(nanmean(m1a_riam(find(p_bin_c>0),:),2),nanmean(m1a_rcam2(find(p_bin_c>0),:),2),'o','MarkerFaceColor',[0.3 0.3 0.3],'MarkerEdgeColor','k');hold on;
-loglog(nanmean(m1a_riam(find(p_bin==0 & p_bin_c==0),:),2),nanmean(m1a_rcam2(find(p_bin==0 & p_bin_c==0),:),2),'o','MarkerFaceColor',[1 1 1],'MarkerEdgeColor','k');hold on;axis square
-xlabel('Ipsi fraction (log)');ylabel('Contra fraction (log)');set(gca,'FontSize',11);set(gca,'TickDir','out');box off;title(panel_title{3},'Color',temp_color(3,:),'FontWeight','normal');
-%xticklabels({'0.0001', '0.01','1'})
-%yticklabels({'', '0.01','1'})
+hold on;rf=refline(1,0);rf.Color='k';hold on;rf.LineStyle=':';
+
+
+%3) 
+errx_l=[];errx_l=[nanstd(rm1(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
+erry_l=[];erry_l=[nanstd(rm2(find(p_bin_c>0),:),[],2)]/sqrt(length(6));
+temp_datax=[];temp_datay=[];diferrx=[];diferry=[];
+temp_datax=nanmean(rm1(find(p_bin_c>0),:),2);
+temp_datay=nanmean(rm2(find(p_bin_c>0),:),2);
+diferrx=temp_datax-errx_l;
+diferry=temp_datay-erry_l;
+h=ploterr(temp_datax,temp_datay,errx_l,erry_l,'logx','logy','hhxy',0);
+h(1).LineStyle='none';h(2).Color=[0.9 0.9 0.9];h(3).Color=[0.9 0.9 0.9];hold on;
+crti=find(diferrx<0 | diferry<0);
+if isempty(crti)==0
+for k=1:length(crti)
+l1=line([temp_datax(crti(k)) temp_datax(crti(k))+errx_l(crti(k))],[temp_datay(crti(k)) temp_datay(crti(k))],'Color',[0.9 0.9 0.9]);
+l1=line([temp_datax(crti(k)) temp_datax(crti(k))],[temp_datay(crti(k)) temp_datay(crti(k))+erry_l(crti(k))],'Color',[0.9 0.9 0.9]);
+end
+end
+
+loglog(nanmean(rm1(find(p_bin>0),:),2),nanmean(rm2(find(p_bin>0),:),2),'o','MarkerFaceColor',[0.8 0.8 0.8],'MarkerEdgeColor','k');hold on;
+loglog(nanmean(rm1(find(p_bin_c>0),:),2),nanmean(rm2(find(p_bin_c>0),:),2),'o','MarkerFaceColor',[0.3 0.3 0.3],'MarkerEdgeColor','k');hold on;
+loglog(nanmean(rm1(find(p_bin==0 & p_bin_c==0),:),2),nanmean(rm2(find(p_bin==0 & p_bin_c==0),:),2),'o','MarkerFaceColor',[1 1 1],'MarkerEdgeColor','k');hold on;axis square
+
+xlabel('Ipsi fraction (log)');ylabel('Contra fraction (log)');set(gca,'FontSize',11);set(gca,'TickDir','out');box off;title(panel_title{i},'Color',temp_color(i,:),'FontWeight','normal');
+if i==1
+xlim([0.0001 0.2]);
+ylim([0.0001 0.2]);
+elseif i==2
+ xlim([0.0001 0.25]);
+ ylim([0.0001 0.25]);
+else
+xlim([0.0001 0.6]);
+ylim([0.0001 0.6]);
+end
+
+set(gca, 'XScale','log', 'YScale','log');
+axis square;
+end
+
+%%
+cd(save_folder);saveas(gcf, 'correlation_log_fraction.pdf');
 %% 
 figure;
 plot(nanmean(v1a_riam,2),nanmean(v1a_rcam2,2),'o')
@@ -529,24 +555,24 @@ h = ttest(x)
 %V1
 for i=1:size(v1a_riam,2)
 idx = find(~isnan(v1a_riam(:,i)));
-mdl = fitlm(v1a_riam(idx,i),v1a_rcam(idx,i));
-coefs = polyfit(v1a_riam(idx,i)', v1a_rcam(idx,i)', 1);
+mdl = fitlm(v1a_riam(idx,i),v1a_rcam2(idx,i));
+coefs = polyfit(v1a_riam(idx,i)', v1a_rcam2(idx,i)', 1);
 slope_v1(i)=coefs(1);
 r2_sqv1(i)=mdl.Rsquared.Ordinary;
 end
 %S1
 for i=1:size(s1a_riam,2)
 idx = find(~isnan(s1a_riam(:,i)));
-mdl = fitlm(s1a_riam(idx,i),s1a_rcam(idx,i));
-coefs = polyfit(s1a_riam(idx,i)', s1a_rcam(idx,i)', 1);
+mdl = fitlm(s1a_riam(idx,i),s1a_rcam2(idx,i));
+coefs = polyfit(s1a_riam(idx,i)', s1a_rcam2(idx,i)', 1);
 slope_s1(i)=coefs(1);
 r2_sqs1(i)=mdl.Rsquared.Ordinary;
 end
 %M1
 for i=1:size(m1a_riam,2)
 idx = find(~isnan(m1a_riam(:,i)));
-mdl = fitlm(m1a_riam(idx,i),m1a_rcam(idx,i));
-coefs = polyfit(m1a_riam(idx,i)', m1a_rcam(idx,i)', 1);
+mdl = fitlm(m1a_riam(idx,i),m1a_rcam2(idx,i));
+coefs = polyfit(m1a_riam(idx,i)', m1a_rcam2(idx,i)', 1);
 slope_m1(i)=coefs(1);
 r2_sqm1(i)=mdl.Rsquared.Ordinary;
 end
@@ -1629,6 +1655,44 @@ offsetAxes;
      h = gca;h.XAxis.Visible = 'off'  
      text(20,-0.1,'Cortical areas','FontSize',11);
      cd(save_folder);saveas(gcf, 'ILNipsi_sorted_areasALL.pdf');
+     %% Remove L6 and then L5 for ILN ipsi and contra
+%% 
+rm2=[];rm2=cat(3,c_v1aafm, c_s1aafm,c_m1aafm);
+rm1=[];rm1=cat(3,i_v1aafm, i_s1aafm,i_m1aafm);
+idx=1;
+[ilni ilnc order_r] = iln_change(rm1,rm2,idx);
+%% 
+
+idx=7;
+[ilni_l6 ilnc_l6 order_l6] = iln_change(rm1,rm2,idx);
+%% 
+idx=8;
+[ilni_l5 ilnc_l5 order_l5] = iln_change(rm1,rm2,idx);
+
+%% 
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 300, 600, 300]);set(gcf,'color','w');
+
+title('sorted by ipsi ILN','FontWeight','normal','Color','k');
+ylabel('ILN')
+li=line([1 45],[0.5 0.5],'Color',[0.5 0.5 0.5],'LineStyle',':');
+hold on;plot(ilni(order_r),'Color','k');
+hold on;plot(ilni_l5(order_r),'Color','r');
+hold on;plot(ilni_l6(order_r),'Color','c');
+[p,tbl,stats]=anova1([ilni' ilni_l5' ilni_l6'])
+presults = multcompare(stats)
+%% 
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 300, 600, 300]);set(gcf,'color','w');
+
+title('sorted by ipsi ILN','FontWeight','normal','Color','k');
+ylabel('ILN')
+li=line([1 45],[0.5 0.5],'Color',[0.5 0.5 0.5],'LineStyle',':');
+hold on;plot(ilnc(order_r),'Color','k');
+hold on;plot(ilnc_l5(order_r),'Color','r');
+hold on;plot(ilnc_l6(order_r),'Color','c');
+%% 
+
+[p,tbl,stats]=anova1([ilnc' ilnc_l5' ilnc_l6'])
+presults = multcompare(stats)
   %% Histogram across all areas all injections 
 bwi=0.05;
 dat_all1={};dat_all1={i_v1aafm i_s1aafm i_m1aafm};
@@ -2196,6 +2260,9 @@ cd(save_folder);saveas(gcf, 'ILN_large_groups_ipsivscontra.pdf');
 dat_all1={};dat_all1={i_v1aafm i_s1aafm i_m1aafm};
 dat_all2={};dat_all2={c_v1aafm c_s1aafm c_m1aafm};
 idx_modules={frontal_idx lateral_idx somamo_idx visual_idx medial_idx aud_idx};
+temp_color=[v1_color ;s1_color; m1_color];
+senso_mo=[idx_modules{3} idx_modules{4} idx_modules{6}];
+higher_a=[idx_modules{1} idx_modules{2} idx_modules{5}];
 pan_title={'VISp','SSp-bfd','MOp'};
 temp_color=[v1_color ;s1_color; m1_color];
 temp_c1=[0.8 0.8 0.8];
@@ -2271,16 +2338,19 @@ ymean3=[];
 all_l23p=[];all_l5p=[];all_l6p=[];
 for j=1:3
 rm1=[];rm2=[];rm1=dat_all1{j};rm2=dat_all2{j};
-ymean1(:,j)=nanmean(rm2(2,:,:)-rm1(2,:,:),3);
-
-ymean2(:,j)=nanmean(rm2(4,:,:)-rm1(4,:,:),3);
-ymean3(:,j)=nanmean(rm2(5,:,:)-rm1(5,:,:),3);
+% ymean1(:,j)=nanmean(rm2(2,:,:)-rm1(2,:,:),3);
+% 
+% ymean2(:,j)=nanmean(rm2(4,:,:)-rm1(4,:,:),3);
+% ymean3(:,j)=nanmean(rm2(5,:,:)-rm1(5,:,:),3);
 l23c=squeeze(rm2(2,:,:));
 l5c=squeeze(rm2(4,:,:));
 l6c=squeeze(rm2(5,:,:));
 l23i=squeeze(rm1(2,:,:));
 l5i=squeeze(rm1(4,:,:));
 l6i=squeeze(rm1(5,:,:));
+ymean1(:,j)=nanmean(l23c-l23i,2);
+ymean2(:,j)=nanmean(l5c-l5i,2);
+ymean3(:,j)=nanmean(l6c-l6i,2);
 p_sl23=[];p_sl5=[];p_sl6=[];
     for m=1:45
     [u p_sl23(m)]=ttest(l23c(m,:),l23i(m,:));
@@ -2303,6 +2373,115 @@ delta_layers_cortex =table(cortex_names(:,2),ymean1(:,1),ymean2(:,1),ymean3(:,1)
     'variablenames',{'Area','V1dL2/3','V1dL5','V1dL6','S1dL2/3','S1dL5','S1dL6','M1dL2/3','M1dL5','M1dL6','V1L2/3sig','V1L5sig','V1L6sig'...
     'S1L2/3sig','S1L5sig','S1L6sig','M1L2/3sig','M1L5sig','M1L6sig'});
 writetable(delta_layers_cortex,'delta_layers_cortex.csv')
+%% show fraction of layers L2/3, L5 and L6 only for the senso- motor module
+dat_all1={};dat_all1={i_v1aafm i_s1aafm i_m1aafm};
+dat_all2={};dat_all2={c_v1aafm c_s1aafm c_m1aafm};
+idx_modules={frontal_idx lateral_idx somamo_idx visual_idx medial_idx aud_idx};
+temp_color=[v1_color ;s1_color; m1_color];
+senso_mo=[idx_modules{3} idx_modules{4} idx_modules{6}];
+higher_a=[idx_modules{1} idx_modules{2} idx_modules{5}];
+pan_title={'VISp','SSp-bfd','MOp'};
+temp_color=[v1_color ;s1_color; m1_color];
+temp_c1=[0.8 0.8 0.8];
+temp_c2=[0.3 0.3 0.3];
+allsm_l23i=[];allsm_l5i=[];allsm_l6i=[];
+allsm_l23c=[];allsm_l5c=[];allsm_l6c=[];
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 100, 250, 600]);set(gcf,'color','w');t=tiledlayout('vertical');
+t.TileSpacing = 'compact';t.Padding = 'compact';
+for j=1:3
+    
+rm1=[];rm2=[];rm1=dat_all1{j};rm2=dat_all2{j};
+
+l23smi=squeeze(nanmean(rm1(2,senso_mo,:),2));
+l5smi=squeeze(nanmean(rm1(4,senso_mo,:),2));
+l6smi=squeeze(nanmean(rm1(5,senso_mo,:),2));
+l23smc=squeeze(nanmean(rm2(2,senso_mo,:),2));
+l5smc=squeeze(nanmean(rm2(4,senso_mo,:),2));
+l6smc=squeeze(nanmean(rm2(5,senso_mo,:),2));
+allsm_l23i=[allsm_l23i; l23smi];
+allsm_l5i=[allsm_l5i ;l5smi];
+allsm_l6i=[allsm_l6i ;l6smi];
+allsm_l23c=[allsm_l23c ;l23smc];
+allsm_l5c=[allsm_l5c; l5smc];
+allsm_l6c=[allsm_l6c; l6smc];
+%ymean1=[];ymean1=nanmean(squeeze(rm1(2,idx_modules{i},:)));
+[uu kk]=ttest(l23smi,l23smc)
+[uu5 kk5]=ttest(l5smi,l5smc)
+[uu6 kk6]=ttest(l6smi,l6smc)
+nexttile
+
+b1=bar(1,[mean(l23smi); mean(l23smc)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+b1=bar(2,[mean(l5smi); mean(l5smc)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+b1=bar(3,[mean(l6smi); mean(l6smc)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+r=1;
+rng(1);r1 = r-0.2 + (0.1)*rand(length(l23smi),1);
+rng(1);r2 = r +  (0.35)*rand(length(l23smc),1);
+sc1=scatter([r1],[l23smi],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+sc1=scatter([r2],[l23smc],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+r=2;
+rng(1);r1 = r-0.2 + (0.1)*rand(length(l5smi),1);
+rng(1);r2 = r +  (0.35)*rand(length(l5smc),1);
+sc1=scatter([r1],[l5smi],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+sc1=scatter([r2],[l5smc],5,'k','filled');hold on;
+r=3;
+rng(1);r1 = r-0.2 + (0.1)*rand(length(l6smi),1);
+rng(1);r2 = r +  (0.35)*rand(length(l6smc),1);
+sc1=scatter([r1],[l6smi],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+sc1=scatter([r2],[l6smc],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+  hold on;h=errorbar([1-0.15],[mean(l23smi)],[nanstd(l23smi)/sqrt(length(l23smi))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([1+0.15],[mean(l23smc)],[nanstd(l23smc)/sqrt(length(l23smc))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+    hold on;h=errorbar([2-0.15],[mean(l5smi)],[nanstd(l5smi)/sqrt(length(l5smi))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([2+0.15],[mean(l5smc)],[nanstd(l5smc)/sqrt(length(l5smc))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+    hold on;h=errorbar([3-0.15],[mean(l6smi)],[nanstd(l6smi)/sqrt(length(l6smi))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([3+0.15],[mean(l6smc)],[nanstd(l6smc)/sqrt(length(l6smc))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  box off;
+
+ ylim([0 0.5]);
+ ylabel('Fraction of neurons');
+ xlim([0.5 3.5]);
+ xticks([1:3]);xticklabels({'L2/3','L5','L6a'});set(gca,'FontSize',11);set(gca,'TickDir','out')
+offsetAxes
+ text(1.6,0.5,pan_title{j},'Color',temp_color(j,:),'FontWeight','normal');
+ 
+ text(0.8,0.48,'***','Color','k','FontSize',18);
+ if j==1 | j==2
+ text(2.8,0.48,'***','Color','k','FontSize',18);
+ end
+%h = gca;h.XAxis.Visible = 'off';
+
+% 
+% %h = gca;h.YAxis.Visible = 'off';
+% 
+% 
+%   %h = gca;h.YAxis.Visible = 'off';   
+% 
+% 
+% 
+ 
+end
+%% 
+cd(save_folder);saveas(gcf, 'fraction_layer_change_semo.pdf');
+
+%% all together 
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 100, 400, 250]);set(gcf,'color','w');
+b1=bar(1,[mean(allsm_l23i); mean(allsm_l23c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+b1=bar(2,[mean(allsm_l5i); mean(allsm_l5c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+b1=bar(3,[mean(allsm_l6i); mean(allsm_l6c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+box off;
+[uu kk]=ttest(l23smi,l23smc)
+[uu5 kk5]=ttest(l5smi,l5smc)
+[uu6 kk6]=ttest(l6smi,l6smc)
 %% Decrease increase percentage of sensory motor areas
 pan_title={'VISp','SSp-bfd','MOp'};
 temp_color=[v1_color ;s1_color; m1_color];
