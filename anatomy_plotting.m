@@ -224,7 +224,13 @@ hold on;er2=errorbar([2.2+j*0.14],nanmean(dat(:,2)),nanstd(dat(:,2),[],1)/sqrt(l
 %legend colour
 text(2.2,1.1-0.07*j,module_names{j},'Color',temp_color(j,:));
 %stats
-[u p1]=ttest(dat(:,1),dat(:,2))
+%test for normality
+% [hfiga(:,j) pfig1a(:,j)]  = adtest(dat(:,1));
+% [hfiga(:,j) pfig1a(:,j)]  = adtest(dat(:,1));
+[hnorm_i(:,j) pnorm_i(:,j)]=adtest(dat(:,1));
+[hnorm_c(:,j) pnorm_c(:,j)]=adtest(dat(:,2));
+%[u p1]=ttest(dat(:,1),dat(:,2));
+[p1 u]=signrank(dat(:,1),dat(:,2))
 end
 xticklabels({'ipsi','contra'});ylabel('Fraction');hold on;title([]);set(gca,'FontSize',11);set(gca,'TickDir','out');box off;
 hold on;text(1.25,1,['***'],'FontSize',18);offsetAxes;h = gca;h.XAxis.Visible = 'off'
@@ -264,42 +270,61 @@ t1=text(2.82,45,'ipsi','FontSize',11);set(t1,'Rotation',90);t1=text(3.15,45,'con
 set(gca,'FontSize',11);set(gca,'TickDir','out');box off;xtickangle(45);ylim([-1 52]);axis off
 
 %TEST
+hnorm_i=[];pnorm_i=[];
 x1=[];x2=[];x3=[];x1 = temp_p{:,1};x2 = temp_p{:,2};x3 = temp_p{:,3};
+[hnorm_i(:,1) pnorm_i(:,1)]=adtest(x1);
+[hnorm_i(:,2) pnorm_i(:,2)]=adtest(x2);
+[hnorm_i(:,3) pnorm_i(:,3)]=adtest(x3);
 dat_test = [x1' x2' x3']; %// Create row vector with your data
 group = {'G1','G1','G1','G1','G1','G1','G2','G2','G2','G2','G2','G2','G3','G3','G3','G3','G3','G3'}; %// set the groups according to the data above
-[p,tbl,stats]  = anova1(dat_test, group) %// Use the 'off' option to prevent the table/box plot from showing up.
+%[p,tbl,stats]  = anova1(dat_test, group) %// Use the 'off' option to prevent the table/box plot from showing up.
+[p,tbl,stats] = kruskalwallis(dat_test, group)
 presults = multcompare(stats)
 
 x1=[];x2=[];x3=[];x1 = temp_p2{:,1};x2 = temp_p2{:,2};x3 = temp_p2{:,3};
+[hnorm_c(:,1) pnorm_c(:,1)]=adtest(x1);
+[hnorm_c(:,2) pnorm_c(:,2)]=adtest(x2);
+[hnorm_c(:,3) pnorm_c(:,3)]=adtest(x3);
 dat_test = [x1' x2' x3']; %// Create row vector with your data
-[p,tbl,stats]  = anova1(dat_test, group)
+%[p,tbl,stats]  = anova1(dat_test, group)
+[p,tbl,stats] = kruskalwallis(dat_test, group)
 presults = multcompare(stats)
 
 %ttest ipsi contra
-disp('VISp test ipsi vs contra');[u p11]=ttest(temp_p{:,1},temp_p2{:,1})
+disp('VISp test ipsi vs contra');
+%[u p11]=ttest(temp_p{:,1},temp_p2{:,1})
+[p11 u]=signrank(temp_p{:,1},temp_p2{:,1})
 nanmean(temp_p{:,1})
 nanstd([temp_p{:,1}]/sqrt(length([temp_p{:,1}])))
 nanmean(temp_p2{:,1})
 nanstd([temp_p2{:,1}]/sqrt(length([temp_p2{:,1}])))
-disp('SSp test ipsi vs contra');[u p11]=ttest(temp_p{:,2},temp_p2{:,2})
+disp('SSp test ipsi vs contra');
+%[u p11]=ttest(temp_p{:,2},temp_p2{:,2})
+[p11 u]=signrank(temp_p{:,2},temp_p2{:,2})
 nanmean(temp_p{:,2})
 nanstd([temp_p{:,2}]/sqrt(length([temp_p{:,2}])))
 nanmean(temp_p2{:,2})
 nanstd([temp_p2{:,2}]/sqrt(length([temp_p2{:,2}])))
-disp('MOp test ipsi vs contra');[u p11]=ttest(temp_p{:,3},temp_p2{:,3})
+disp('MOp test ipsi vs contra');
+%[u p11]=ttest(temp_p{:,3},temp_p2{:,3})
+[p11 u]=signrank(temp_p{:,3},temp_p2{:,3})
 nanmean(temp_p{:,3})
 nanstd([temp_p{:,3}]/sqrt(length([temp_p{:,3}])))
 nanmean(temp_p2{:,3})
 nanstd([temp_p2{:,3}]/sqrt(length([temp_p2{:,3}])))
 %Sensory vs motor
 %ipsi
-disp('ipsi sensory vs motor');[u p11]=ttest2([temp_p{:,1} ;temp_p{:,2}],temp_p{:,3})
+disp('ipsi sensory vs motor');
+%[u p11]=ttest2([temp_p{:,1} ;temp_p{:,2}],temp_p{:,3})
+[p11 u]=ranksum([temp_p{:,1} ;temp_p{:,2}],temp_p{:,3})
 nanmean([temp_p{:,1} ;temp_p{:,2}])
 nanstd([temp_p{:,1} ;temp_p{:,2}]/sqrt(length([temp_p{:,1} ;temp_p{:,2}])))
 nanmean(temp_p{:,3})
 nanstd([temp_p{:,3}]/sqrt(length([temp_p{:,3}])))
 %contra
-disp('contra sensory vs motor');[u p11]=ttest2([temp_p2{:,1} ;temp_p2{:,2}],temp_p2{:,3})
+disp('contra sensory vs motor');
+%[u p11]=ttest2([temp_p2{:,1} ;temp_p2{:,2}],temp_p2{:,3})
+[p11 u]=ranksum([temp_p2{:,1} ;temp_p2{:,2}],temp_p2{:,3})
 nanmean([temp_p2{:,1} ;temp_p2{:,2}])
 nanstd([temp_p2{:,1} ;temp_p2{:,2}]/sqrt(length([temp_p2{:,1} ;temp_p2{:,2}])))
 nanmean(temp_p2{:,3})
@@ -1130,8 +1155,8 @@ line([1.7 1.7],[0.2 0.85],'Color','k');
 
 cd(save_folder);saveas(gcf,'overall_dominance_2.pdf');
 
-% [p,tbl,stats] = anova1([temp_p])
-%  presults = multcompare(stats)
+ [p,tbl,stats] = anova1([temp_p])
+  presults = multcompare(stats)
 %% Based on area VISp, SSpbf, MOp dominace of L2/3 L5 and L6a CONTRA 
 dat_all={};dat_all={c_v1aafm c_s1aafm c_m1aafm};
 temp_color=[v1_color ;s1_color; m1_color];
@@ -1181,8 +1206,8 @@ line([2 3],[60 60],'Color','k');
 text(2.05,65,'n.s.','Color','k','FontSize',11);
 end
 ylim([0 80])
-% [p,tbl,stats] = anova1([temp_p])
-%  presults = multcompare(stats)
+ [p,tbl,stats] = anova1([temp_p])
+  presults = multcompare(stats)
 end
 cd(save_folder);saveas(gcf, 'dominance_per_injection.pdf');
 %% IPSI
@@ -1240,11 +1265,11 @@ t1=text(1.9,-17,'L5','FontSize',11);set(t1,'Rotation',90);
 t1=text(2.9,-17,'L6a','FontSize',11);set(t1,'Rotation',90);
 ylim([0 80])
 
- % [p,tbl,stats] = anova1([temp_p])
- %  presults = multcompare(stats)
+  [p,tbl,stats] = anova1([temp_p])
+   presults = multcompare(stats)
 end
 
-cd(save_folder);saveas(gcf, 'ipsi dominance_per_injection.pdf');
+%cd(save_folder);saveas(gcf, 'ipsi dominance_per_injection.pdf');
 %% Figure 4 HIEARCHY
 %% Next to each other ILN ipsi vs contra
 idx=1;
@@ -2358,8 +2383,7 @@ injection_info = readtable('C:\Users\simonw\S1-V1 interaction Dropbox\Simon_Manu
 inj_perc=table2cell(injection_info);
 injection_bolus = readtable('C:\Users\simonw\S1-V1 interaction Dropbox\Simon_Manuel\Manuscripts\L6_dominance\Injections\csv\injection_bolus.csv');
 inj_bol=table2cell(injection_bolus);
-%% Bolus for m2
-px=[];px=nansum(nansum(i_m2aa))+nansum(nansum(c_m2aa));
+
 
 %% Plot all cells ipis+contra  TOTAL numbers for supplement
 temp_color=[v1_color ;s1_color; m1_color];
@@ -2391,36 +2415,51 @@ cd(save_folder);saveas(gcf, 'Total_nr_cells.pdf');
 presults = multcompare(stats)
 
 %% Bolus volume vs cell numbers
+% Bolus cell numbers for m2
+px=[];px=nansum(nansum(i_m2aa))+nansum(nansum(c_m2aa));
+
 fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 270, 270]);set(gcf,'color','w');
 temp_color=[v1_color ;s1_color; m1_color];
 p1=[];p1=squeeze(nansum(nansum(i_v1aam)))+squeeze(nansum(nansum(c_v1aam)));
 p2=[];p2=squeeze(nansum(nansum(i_s1aam)))+squeeze(nansum(nansum(c_s1aam)));
 p3=[];p3=squeeze(nansum(nansum(i_m1aam)))+squeeze(nansum(nansum(c_m1aam)));
-sc1=scatter(cell2mat(inj_bol(:,1)),p1,50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor='k';
-sc1=scatter(cell2mat(inj_bol(:,2)),p2,50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor='k';
-sc1=scatter(cell2mat(inj_bol(:,3)),p3,50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor='k';
+sc1=scatter(cell2mat(inj_bol(:,1)),p1,50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=temp_color(1,:);
+sc1=scatter(cell2mat(inj_bol(:,2)),p2,50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=temp_color(2,:);
+sc1=scatter(cell2mat(inj_bol(:,3)),p3,50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=temp_color(3,:);
+sc2=scatter(cell2mat(inj_bol(1,4)),px,50,'k','filled');hold on;sc2.MarkerEdgeColor=[1 1 1];sc2.MarkerEdgeAlpha=0.5;sc2.MarkerFaceColor=[0.5 0.5 0.5];
 hold on;box off;ylabel('Total nr of cells (ipsi + contra)');xlabel('Injection volume (mm^{3})')
 set(gca,'FontSize',11);set(gca,'TickDir','out');
+xlim([0.1 1]);ylim([0 420000])
+
+t1=text(0.8,420000,'VISp','FontSize',11,'Color',temp_color(1,:));
+t1=text(0.8,390000,'SSp-bfd','FontSize',11,'Color',temp_color(2,:));
+t1=text(0.8,360000,'MOp','FontSize',11,'Color',temp_color(3,:));
+t1=text(0.8,330000,'Excl MOp','FontSize',11,'Color',[0.5 0.5 0.5]);
 offsetAxes
+cd(save_folder);saveas(gcf, 'bolusvscellnumber.pdf');
 %% spill over
 fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 270, 270]);set(gcf,'color','w');
 temp_color=[v1_color ;s1_color; m1_color];
 sc1=scatter(cell2mat(inj_bol(:,3)),cell2mat(inj_perc(:,1)),50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=temp_color(3,:);
 sc1=scatter(cell2mat(inj_bol(:,2)),cell2mat(inj_perc(:,7)),50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=temp_color(2,:);
 sc1=scatter(cell2mat(inj_bol(:,1)),cell2mat(inj_perc(:,12)),50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=temp_color(1,:);
+sc1=scatter(cell2mat(inj_bol(:,4)),cell2mat(inj_perc(:,16)),50,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=0.5;sc1.MarkerFaceColor=[0.5 0.5 0.5];
 hold on;box off;ylabel('Bolus in target area (%)');xlabel('Injection volume (mm^{3})');
 set(gca,'FontSize',11);set(gca,'TickDir','out');
-xlim([0.2 1]);ylim([50 100]);
-t1=text(0.7,100,'VISp','FontSize',11,'Color',temp_color(1,:));
-t1=text(0.7,95,'SSp-bfd','FontSize',11,'Color',temp_color(2,:));
-t1=text(0.7,90,'MOp','FontSize',11,'Color',temp_color(3,:));
+xlim([0.1 1]);ylim([20 100]);
+t1=text(0.8,100,'VISp','FontSize',11,'Color',temp_color(1,:));
+t1=text(0.8,93,'SSp-bfd','FontSize',11,'Color',temp_color(2,:));
+t1=text(0.8,86,'MOp','FontSize',11,'Color',temp_color(3,:));
+t1=text(0.8,79,'Excl MOp','FontSize',11,'Color',[0.5 0.5 0.5]);
 offsetAxes
-%% 
-temp_color=[v1_color ;s1_color; m1_color];
-fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 600, 270]);set(gcf,'color','w');tiledlayout("horizontal");
-p1=[];p1={cell2mat(inj_perc(:,12:15)) cell2mat(inj_perc(:,7:11)) cell2mat(inj_perc(:,1:6))};
-areas_com={{'VISp', 'Callos', 'VISl','OpticRad'};{'SSp-bfd','SSp-un','SSp-n','Callos','OpticRad'};{'MOp','SSp-ul','SSp-ll','SSs','Cingb','MOs'}};
-for i=1:3
+%% Bar plot
+temp_color=[v1_color ;s1_color; m1_color; [0.5 0.5 0.5]];
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 800, 270]);set(gcf,'color','w');t=tiledlayout("horizontal");
+t.TileSpacing = 'compact';
+t.Padding = 'compact';
+p1=[];p1={cell2mat(inj_perc(:,12:15)) cell2mat(inj_perc(:,7:11)) cell2mat(inj_perc(:,1:6)) cell2mat(inj_perc(:,16:17))};
+areas_com={{'VISp', 'Callos', 'VISl','OpticRad'};{'SSp-bfd','SSp-un','SSp-n','Callos','OpticRad'};{'MOp','SSp-ul','SSp-ll','SSs','Cingb','MOs'};{'MOp','MOs'}};
+for i=1:4
     nexttile
 b1=bar([1:size(p1{i},2)],[nanmean(p1{i})],0.8);b1.FaceColor=temp_color(i,:);set(b1,'ShowBaseLine','off');b1.EdgeColor='none';
  hold on;errorbar([1:size(p1{i},2)],[nanmean(p1{i})],[nanstd(p1{i})/sqrt(size(p1{i},1))]...
@@ -2428,15 +2467,15 @@ b1=bar([1:size(p1{i},2)],[nanmean(p1{i})],0.8);b1.FaceColor=temp_color(i,:);set(
         'Color', 'k', 'LineWidth', 1,'CapSize',0);hold on;
 ylabel('Percentage of viral bolus (%)');
 xticklabels(areas_com{i}(:));xtickangle(45);
-box off;set(gca,'FontSize',11);set(gca,'TickDir','out');
-
-if i==2 | i==3
+box off;set(gca,'FontSize',10);set(gca,'TickDir','out');
+xlim([0.5 6.5])
+if i==2 | i==3 | i==4
         h = gca;h.YAxis.Visible = 'off'  ;
 end
 offsetAxes
 end
 
-
+cd(save_folder);saveas(gcf, 'Percentage bolus.pdf');
 %% Homotopic areas fractions on contralateral side: SUpplement
 %visp_idx=[31];ssp_idx=[18];mop_idx=[25]
 fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 170, 250]);set(gcf,'color','w');tiledlayout("horizontal")
