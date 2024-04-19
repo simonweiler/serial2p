@@ -13,14 +13,18 @@ h_index(i)=1-((layers(2,i)+layers(3,i)) / (layers(2,i)+layers(3,i)+layers(4,i)))
 pL6a(i)=(layers(5,i)) / (layers(2,i)+layers(4,i)+layers(5,i)+layers(6,i));
 %6) fraction layer 6a/5
 pL6aL5(i)=(layers(5,i)) / (layers(4,i));
+%ILN without L6
+iln_n6(i)=(layers(4,i)) / (layers(2,i)+layers(4,i));
+%ILN without L5
+iln_n5(i)=(layers(5,i)+layers(6,i)) / (layers(2,i)+layers(5,i)+layers(6,i));
 end
 
-indexcalc=[iln' L6i' L6ai' h_index' pL6a' pL6aL5'];
+indexcalc=[iln' L6i' L6ai' h_index' pL6a' pL6aL5' iln_n6' iln_n5'];
 
-for k=1:size(indexcalc,2)
-    if sum(isnan(indexcalc(:,k)))>=size(indexcalc,2)-1
-    indexcalc(find(~isnan(indexcalc(:,k))),k)=NaN;
-    else
-    end
-end
+% for k=1:size(indexcalc,2)
+%     if sum(isnan(indexcalc(:,k)))>=size(indexcalc,2)-1
+%     indexcalc(find(~isnan(indexcalc(:,k))),k)=NaN;
+%     else
+%     end
+% end
 end
