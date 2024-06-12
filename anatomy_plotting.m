@@ -74,6 +74,7 @@ c_m1aaf(3,idx_nanm1,:)=NaN;c_m1aa(3,idx_nanm1,:)=NaN;c_m1aacd(3,idx_nanm1,:)=NaN
 [cs1_index] = anatomy_indexcalc(c_s1a);
 [im1_index] = anatomy_indexcalc(i_m1a);
 [cm1_index] = anatomy_indexcalc(c_m1a);
+
 %% criteria when selecting cellcounts per 45 brain areas, and mice 
 %Decided with TWM on the 11.3.2024: 
 %when dividing into 45 areas we exclude an area with 10 or less cells and
@@ -1299,7 +1300,7 @@ end
 cd(save_folder);saveas(gcf, 'ILN_global.pdf');
 
 
-%% 
+
 %% Fig S5 Sorted areas based on index SCHEREN PLOT for supplement 
 temp_color2=linspecer(6);
 dat_all1={};dat_all1={i_v1aafm i_s1aafm i_m1aafm};
@@ -1950,55 +1951,56 @@ offsetAxes
  
 end
 cd(save_folder);saveas(gcf, 'fraction_layer_change_semo.pdf');
+%% 
 
-%% all together 
-% fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 100, 400, 250]);set(gcf,'color','w');
-% b1=bar(1,[mean(allsm_l23i); mean(allsm_l23c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
-% set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
-% b1=bar(2,[mean(allsm_l5i); mean(allsm_l5c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
-% set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
-% b1=bar(3,[mean(allsm_l6i); mean(allsm_l6c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
-% set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
-% r=1;
-% rng(1);r1 = r-0.2 + (0.1)*rand(length(allsm_l23i),1);
-% rng(1);r2 = r +  (0.35)*rand(length(allsm_l23c),1);
-% sc1=scatter([r1],[allsm_l23i],5,'k','filled');hold on;
-% sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
-% sc1=scatter([r2],[allsm_l23c],5,'k','filled');hold on;
-% sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
-% r=2;
-% rng(1);r1 = r-0.2 + (0.1)*rand(length(allsm_l5i),1);
-% rng(1);r2 = r +  (0.35)*rand(length(allsm_l5c),1);
-% sc1=scatter([r1],[allsm_l5i],5,'k','filled');hold on;
-% sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
-% sc1=scatter([r2],[allsm_l5c],5,'k','filled');hold on;
-% sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
-% r=3;
-% rng(1);r1 = r-0.2 + (0.1)*rand(length(allsm_l6i),1);
-% rng(1);r2 = r +  (0.35)*rand(length(allsm_l6c),1);
-% sc1=scatter([r1],[allsm_l6i],5,'k','filled');hold on;
-% sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
-% sc1=scatter([r2],[allsm_l6c],5,'k','filled');hold on;
-% sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
-%   hold on;h=errorbar([1-0.15],[mean(allsm_l23i)],[nanstd(allsm_l23i)/sqrt(length(allsm_l23i))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-%   hold on;h=errorbar([1+0.15],[mean(allsm_l23c)],[nanstd(allsm_l23c)/sqrt(length(allsm_l23c))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-%     hold on;h=errorbar([2-0.15],[mean(allsm_l5i)],[nanstd(allsm_l5i)/sqrt(length(allsm_l5i))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-%   hold on;h=errorbar([2+0.15],[mean(allsm_l5c)],[nanstd(allsm_l5c)/sqrt(length(allsm_l5c))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-%     hold on;h=errorbar([3-0.15],[mean(allsm_l6i)],[nanstd(allsm_l6i)/sqrt(length(allsm_l6i))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-%   hold on;h=errorbar([3+0.15],[mean(allsm_l6c)],[nanstd(allsm_l6c)/sqrt(length(allsm_l6c))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-%   box off;
-% 
-%  ylim([0 0.5]);
-%  ylabel('Fraction of neurons');
-%  xlim([0.5 3.5]);
-%   text(0.8,0.48,'***','Color','k','FontSize',18);
-%   text(2.8,0.48,'***','Color','k','FontSize',18);
-% 
-%  xticks([1:3]);xticklabels({'L2/3','L5','L6a'});set(gca,'FontSize',11);set(gca,'TickDir','out')
-% offsetAxes
-% [uu kk]=ttest(allsm_l23i,allsm_l23c)
-% [uu5 kk5]=ttest(allsm_l5i,allsm_l5c)
-% [uu6 kk6]=ttest(allsm_l6i,allsm_l6c)
+% all together 
+fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 100, 400, 250]);set(gcf,'color','w');
+b1=bar(1,[mean(allsm_l23i); mean(allsm_l23c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+b1=bar(2,[mean(allsm_l5i); mean(allsm_l5c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+b1=bar(3,[mean(allsm_l6i); mean(allsm_l6c)]);hold on;b1(1).FaceColor=temp_c1;b1(2).FaceColor=temp_c2;
+set(b1,'ShowBaseLine','off');b1(1).EdgeColor='none';b1(2).EdgeColor='none';
+r=1;
+rng(1);r1 = r-0.2 + (0.1)*rand(length(allsm_l23i),1);
+rng(1);r2 = r +  (0.35)*rand(length(allsm_l23c),1);
+sc1=scatter([r1],[allsm_l23i],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+sc1=scatter([r2],[allsm_l23c],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+r=2;
+rng(1);r1 = r-0.2 + (0.1)*rand(length(allsm_l5i),1);
+rng(1);r2 = r +  (0.35)*rand(length(allsm_l5c),1);
+sc1=scatter([r1],[allsm_l5i],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+sc1=scatter([r2],[allsm_l5c],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+r=3;
+rng(1);r1 = r-0.2 + (0.1)*rand(length(allsm_l6i),1);
+rng(1);r2 = r +  (0.35)*rand(length(allsm_l6c),1);
+sc1=scatter([r1],[allsm_l6i],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+sc1=scatter([r2],[allsm_l6c],5,'k','filled');hold on;
+sc1(1).MarkerEdgeColor=[0.5 0.5 0.5];sc1(1).MarkerFaceColor=[0.2 0.2 0.2];sc1(1).MarkerFaceAlpha=[0.5];sc1(1).MarkerEdgeAlpha=[0.5];
+  hold on;h=errorbar([1-0.15],[mean(allsm_l23i)],[nanstd(allsm_l23i)/sqrt(length(allsm_l23i))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([1+0.15],[mean(allsm_l23c)],[nanstd(allsm_l23c)/sqrt(length(allsm_l23c))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+    hold on;h=errorbar([2-0.15],[mean(allsm_l5i)],[nanstd(allsm_l5i)/sqrt(length(allsm_l5i))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([2+0.15],[mean(allsm_l5c)],[nanstd(allsm_l5c)/sqrt(length(allsm_l5c))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+    hold on;h=errorbar([3-0.15],[mean(allsm_l6i)],[nanstd(allsm_l6i)/sqrt(length(allsm_l6i))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([3+0.15],[mean(allsm_l6c)],[nanstd(allsm_l6c)/sqrt(length(allsm_l6c))], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  box off;
+
+ ylim([0 0.5]);
+ ylabel('Fraction of neurons');
+ xlim([0.5 3.5]);
+  text(0.8,0.48,'***','Color','k','FontSize',18);
+  text(2.8,0.48,'***','Color','k','FontSize',18);
+
+ xticks([1:3]);xticklabels({'L2/3','L5','L6a'});set(gca,'FontSize',11);set(gca,'TickDir','out')
+offsetAxes
+[uu kk]=ttest(allsm_l23i,allsm_l23c)
+[uu5 kk5]=ttest(allsm_l5i,allsm_l5c)
+[uu6 kk6]=ttest(allsm_l6i,allsm_l6c)
 %% Panel D: Decrease increase percentage of sensory motor areas
 clc;
 pan_title={'VISp','SSp-bfd','MOp'};
@@ -2328,8 +2330,68 @@ box off;xlim([0 4]);xticklabels({'','Excl L5','Default','Excl L6',''});ylabel('c
 xtickangle(45);offsetAxes;ylim([0 1]);yticks([0:0.2:1]);
 cd(save_folder);saveas(gcf, 'line_paired_ILN_removeL5L6.pdf');
 
+%% New last figure 
 
+%% 
 
+%% New plot about ILN circles
+
+temp_color2=linspecer(6);
+dat_all1={};dat_all1={i_v1aafm i_s1aafm i_m1aafm};
+dat_all2={};dat_all2={c_v1aafm c_s1aafm c_m1aafm};
+title_pan={'VISp','SSp-bfd','MOp'};
+cl_idx=[visp_idx ssp_idx mop_idx];
+frontal_idx=[1:8];lateral_idx=[9:16];somamo_idx=[17:26];visual_idx=[27:36];medial_idx=[37:39];aud_idx=[40:43];lateral_idx2=[44:45];
+areas_idx=ones(45,1);
+areas_modul=[];
+areas_modul=[areas_idx(frontal_idx)*1; areas_idx(lateral_idx)*2 ; areas_idx(somamo_idx)*3; ...
+    areas_idx(visual_idx)*4; areas_idx(medial_idx)*5; areas_idx(aud_idx)*6 ; areas_idx(lateral_idx2)*2];
+temp_c1=[0.8 0.8 0.8];
+temp_c2=[0.3 0.3 0.3];
+temp_color=[v1_color ;s1_color; m1_color];
+idx=[];idx=1;
+aILNi=[];
+aILNc=[];
+
+for k=1:3
+    rm1=[];rm2=[];rm1=dat_all1{k};rm2=dat_all2{k};
+%calculate and plot 
+i_metric=[];c_metric=[];
+%calculate indexes across areas
+for i=1:length(rm1)
+temp_l=[];temp_l2=[];
+temp_l=squeeze(rm1(:,i,:));
+temp_l2=squeeze(rm2(:,i,:));
+[i_metric(:,i,:)] = anatomy_indexcalc(temp_l);
+[c_metric(:,i,:)] = anatomy_indexcalc(temp_l2);
+end 
+temp_metric1=i_metric(:,:,idx);temp_metric2=c_metric(:,:,idx);
+rm1=[];rm2=[];
+rm1=temp_metric1;rm2=temp_metric2;
+aILNi=[aILNi; rm1];
+aILNc=[aILNc; rm2];
+
+temp_rm1=[];temp_rm1=nanmean(rm1);
+temp_rm2=[];temp_rm2=nanmean(rm2);
+% temp_rm1(cl_idx(k))=[];
+% temp_rm2(cl_idx(k))=[];
+cortex_abb=[];
+cortex_abb=cortex_names(:,2);
+fILN_visualize(cell2mat(cortex_names(:,4)),cell2mat(cortex_names(:,5)),temp_rm1,temp_rm2,temp_color(k,:),title_pan{k})
+if k==1
+cd(save_folder);saveas(gcf, 'cortex_iln_VISp.pdf');
+elseif k==2
+    cd(save_folder);saveas(gcf, 'cortex_iln_SSp.pdf');
+else k==3
+    cd(save_folder);saveas(gcf, 'cortex_iln_MOp.pdf');
+end
+% cortex_abb(cl_idx(k))=[];
+end
+%% 
+temp_rm1=[];temp_rm1=nanmean(i_v1aafm,3);
+temp_rm2=[];temp_rm2=nanmean(c_v1aafm,3);
+k=1
+fILN_visualize(cell2mat(cortex_names(:,4)),cell2mat(cortex_names(:,5)),temp_rm1(5,:),temp_rm2(5,:),temp_color(k,:),title_pan{k})
 %% 
 
 
@@ -2676,7 +2738,7 @@ if j==3
     cd(save_folder);saveas(gcf, 'layer_global_injection_areaMOP.pdf');
 end
 end
-%% Supp3 hierarhcy HVA
+%% Supp5 hierarhcy HVA
 dat_all1={};dat_all1={i_v1aafm i_s1aafm i_m1aafm};
 dat_all2={};dat_all2={c_v1aafm c_s1aafm c_m1aafm};
 %idx_modules={frontal_idx lateral_idx somamo_idx visual_idx medial_idx aud_idx};
@@ -2708,18 +2770,40 @@ temp_l2=squeeze(rm2(:,i,:));
 [c_metric(:,i,:)] = anatomy_indexcalc(temp_l2);
 end
 visp_iln_i=i_metric(:,:,1);visp_hindex_i=i_metric(:,:,4);
+visp_iln_i_l6=i_metric(:,:,7);
+visp_iln_i_l5=i_metric(:,:,8);
+visp_iln_i_l56=visp_iln_i-((visp_iln_i-visp_iln_i_l6)+(visp_iln_i-visp_iln_i_l5));
 
 vareas_names=cortex_names(27:36,2)
 kk1=[];kk2=[];
 [ventral_iln kk1]=sort(nanmean(visp_iln_i(:,ventral_areas)),'descend');
+ventral_ilnl6=nanmean(visp_iln_i_l6(:,ventral_areas));
+ventral_ilnl56=nanmean(visp_iln_i_l56(:,ventral_areas));
+v_ilnl6=ventral_ilnl6(kk1);
+v_ilnl56=ventral_ilnl56(kk1);
+%yerr3=[];yerr3=nanstd(visp_iln_i_l6(:,ventral_areas))./sqrt(size(visp_iln_i_l6(:,ventral_areas),1));
+%yerr3=[yerr3 NaN];
+yerr5=[];yerr5=nanstd(visp_iln_i_l56(:,ventral_areas))./sqrt(size(visp_iln_i_l56(:,ventral_areas),1));
+yerr5=[yerr5 NaN];
+%yerr4=[];yerr4=nanstd(visp_iln_i_l6(:,dorsal_areas))./sqrt(size(visp_iln_i_l6(:,dorsal_areas),1));
+yerr6=[];yerr6=nanstd(visp_iln_i_l56(:,dorsal_areas))./sqrt(size(visp_iln_i_l56(:,dorsal_areas),1));
 kk1=[kk1 5];
 [dorsal_iln kk2]=sort(nanmean(visp_iln_i(:,dorsal_areas)),'ascend');
+dorsal_ilnl6=nanmean(visp_iln_i_l6(:,dorsal_areas));
+dorsal_ilnl56=nanmean(visp_iln_i_l56(:,dorsal_areas));
 yerr1=[];yerr1=nanstd(visp_iln_i(:,ventral_areas))./sqrt(size(visp_iln_i(:,ventral_areas),1));
 yerr1=[yerr1 NaN];
+
+
 yerr2=[];yerr2=nanstd(visp_iln_i(:,dorsal_areas))./sqrt(size(visp_iln_i(:,dorsal_areas),1));
 fig7= figure;set(fig7, 'Name', 'Barplot groups');set(fig7, 'Position', [400, 500, 300, 330]);set(gcf,'color','w')
  hold on;h=errorbar([1:10],[ventral_iln NaN dorsal_iln],[yerr1(kk1) yerr2(kk2)], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
-hold on;sc1=scatter([1:10],[ventral_iln NaN dorsal_iln] ,60,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=1;sc1.MarkerFaceColor=[0.65 0.65 0.65];
+  %hold on;h=errorbar([1:10],[v_ilnl6 NaN dorsal_ilnl6(kk2)],[yerr3(kk1) yerr4(kk2)], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+  hold on;h=errorbar([1:10],[v_ilnl56 NaN dorsal_ilnl56(kk2)],[yerr5(kk1) yerr6(kk2)], 'LineStyle', 'none','Color', 'k', 'LineWidth', 1,'CapSize',0);
+
+  hold on;sc1=scatter([1:10],[ventral_iln NaN dorsal_iln] ,60,'k','filled');hold on;sc1.MarkerEdgeColor=[1 1 1];sc1.MarkerEdgeAlpha=1;sc1.MarkerFaceColor=[0.75 0.75 0.75];
+%hold on;sc2=scatter([1:10],[v_ilnl6 NaN dorsal_ilnl6(kk2)] ,60,'k','filled');hold on;sc2.MarkerEdgeColor=[1 1 1];sc2.MarkerEdgeAlpha=1;sc2.MarkerFaceColor=[0 0 0];
+hold on;sc2=scatter([1:10],[v_ilnl56 NaN dorsal_ilnl56(kk2)] ,60,'k','filled');hold on;sc2.MarkerEdgeColor=[1 1 1];sc2.MarkerEdgeAlpha=1;sc2.MarkerFaceColor=[0.4 0.4 0.4];
 xticks([1:1:10]);xticklabels(vareas_names([kk1 kk2+5]));
 ylabel('ILN ipsi');set(gca,'FontSize',11);set(gca,'TickDir','out');box off;%xtickangle(45);
 line([5 5],[0.4 0.9],'LineStyle','--','Color','k');
